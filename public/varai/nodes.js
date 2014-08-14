@@ -13,6 +13,8 @@
  ** See the License for the specific language governing permissions and
  ** limitations under the License.
  */
+
+ 
 VARAI.nodes = function() {
 
     var node_defs = {};
@@ -21,7 +23,7 @@ VARAI.nodes = function() {
     var links = [];
     var defaultWorkspace;
     var workspaces = {};
-
+   
     function registerType(nt,def) {
         node_defs[nt] = def;
         // TODO: too tightly coupled into palette UI
@@ -252,6 +254,7 @@ VARAI.nodes = function() {
             var node = nodes[i];
             nns.push(convertNode(node, true));
         }
+        
         return nns;
     }
 

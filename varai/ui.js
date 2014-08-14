@@ -67,7 +67,8 @@ function setupUI(settings) {
             version: settings.version
         };
         res.json(safeSettings);
-    });
+    });   
+   
     
     app.use("/",express.static(__dirname + '/../public'));
     

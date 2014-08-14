@@ -42,7 +42,6 @@ var VARAI = {
             settings.version = p.version;
         }
         
-        
         server.init(httpServer,settings);
         library.init();
         return server.app;

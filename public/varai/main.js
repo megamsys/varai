@@ -13,6 +13,7 @@
  ** See the License for the specific language governing permissions and
  ** limitations under the License.
  */
+
 var VARAI = function() {
 
     $('#btn-keyboard-shortcuts').click(function(){showHelp();});
@@ -79,6 +80,11 @@ var VARAI = function() {
             $("#btn-icn-deploy").removeClass('icon-upload');
             $("#btn-icn-deploy").addClass('spinner');
             VARAI.view.dirty(false);
+            console.log("++++++++++++++++++++++++++");
+            console.log(JSON.stringify(nns));
+            console.log(nns.length);
+            //assemblies JSON creation 
+            
             
             $.ajax({
                 url:"flows",

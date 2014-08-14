@@ -121,7 +121,12 @@ var flowNodes = module.exports = {
         storage = _storage;
     },
     load: function() {
+    	console.log("==================================");
+    	console.log(storage.getFlows());
+    	console.log("==================================");
         return storage.getFlows().then(function(flows) {
+        	
+        	console.log(flows);
             return credentials.load().then(function() {
                 activeConfig = flows;
                 if (activeConfig && activeConfig.length > 0) {

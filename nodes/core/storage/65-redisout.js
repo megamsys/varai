@@ -20,7 +20,7 @@ module.exports = function(VARAI) {
 
     var hashFieldRE = /^([^=]+)=(.*)$/;
 
-    var redisConnectionPool = function() {
+  /*  var redisConnectionPool = function() {
         var connections = {};
         var obj = {
             get: function(host,port) {
@@ -51,10 +51,10 @@ module.exports = function(VARAI) {
             }
         };
         return obj;
-    }();
+    }();*/
 
 
-    function RedisOutNode(n) {
+    function RedisOutNode(n) {/*
         VARAI.nodes.createNode(this,n);
         this.port = n.port||"6379";
         this.hostname = n.hostname||"127.0.0.1";
@@ -103,6 +103,6 @@ module.exports = function(VARAI) {
         this.on("close", function() {
             redisConnectionPool.close(node.client);
         });
-    }
+   */ }
     VARAI.nodes.registerType("redis out",RedisOutNode);
 }
