@@ -42,7 +42,7 @@ function createServer(_server,_settings) {
     
     app.get("/flows",function(req,res) {
         res.json(varaiNodes.getFlows());
-    });
+    });  
     
     app.post("/flows",
         express.json(),
@@ -86,6 +86,7 @@ function start() {
                 util.log("------------------------------------------");
             }
             defer.resolve();
+            
             
             varaiNodes.loadFlows();
         });

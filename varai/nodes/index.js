@@ -25,7 +25,7 @@ var Node = require("./Node");
  * @param opts - optional additional options for the node
  */
 function registerType(type,constructor,opts) {
-    if (opts && opts.credentials) {
+	if (opts && opts.credentials) {
         credentials.register(type,opts.credentials);
     }
     registry.registerType(type,constructor);    
@@ -44,12 +44,16 @@ function init(_settings,storage) {
     flows.init(storage);
     registry.init(_settings);
 }
-
+//var randomWords = require('random-words');
+//console.log(randomWords());
+//function rwords() {
+//	console.log(randomWords());
+//	return randomWords();
+//}
 
 module.exports = {
     init: init,
     load: registry.load,
-    
     createNode: createNode,
     registerType: registerType,
     

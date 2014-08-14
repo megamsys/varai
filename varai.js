@@ -55,6 +55,7 @@ if (parsedArgs.help) {
     console.log("Documentation can be found at http://nodered.org");
     process.exit();
 }
+
 if (parsedArgs.argv.remain.length > 0) {
     flowFile = parsedArgs.argv.remain[0];
 }
@@ -117,21 +118,29 @@ settings.uiHost = settings.uiHost||"0.0.0.0";
 settings.flowFile = flowFile || settings.flowFile;
 
 VARAI.init(server,settings);
-
+/*
 if (settings.httpAdminRoot !== false && settings.httpAdminAuth) {
+	console.log("===================================");
+	console.log("httpAdminroot entry");
+
     app.use(settings.httpAdminRoot,
         express.basicAuth(function(user, pass) {
             return user === settings.httpAdminAuth.user && crypto.createHash('md5').update(pass,'utf8').digest('hex') === settings.httpAdminAuth.pass;
         })
     );
 }
+
 if (settings.httpNodeRoot !== false && settings.httpNodeAuth) {
+	console.log("===================================");
+	console.log("httpNoderoot entry");
+
     app.use(settings.httpNodeRoot,
         express.basicAuth(function(user, pass) {
             return user === settings.httpNodeAuth.user && crypto.createHash('md5').update(pass,'utf8').digest('hex') === settings.httpNodeAuth.pass;
         })
     );
 }
+*/
 if (settings.httpAdminRoot !== false) {
     app.use(settings.httpAdminRoot,VARAI.httpAdmin);
 }
@@ -139,6 +148,7 @@ if (settings.httpNodeRoot !== false) {
     app.use(settings.httpNodeRoot,VARAI.httpNode);
 }
 
+/*
 if (settings.httpStatic) {
     settings.httpStaticAuth = settings.httpStaticAuth || settings.httpAuth;
     if (settings.httpStaticAuth) {
@@ -150,6 +160,7 @@ if (settings.httpStatic) {
     }
     app.use("/",express.static(settings.httpStatic));
 }
+*/
 
 function getListenPath() {
     var listenPath = 'http'+(settings.https?'s':'')+'://'+

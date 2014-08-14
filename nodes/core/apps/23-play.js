@@ -14,7 +14,7 @@
  ** limitations under the License.
  */
 
-module.exports = function(VARAI) {
+/*module.exports = function(VARAI) {
     "use strict";
     var dgram = require('dgram');
 
@@ -168,4 +168,4 @@ module.exports = function(VARAI) {
         });
     }
     VARAI.nodes.registerType("play out",playout);
-}
+}*/
