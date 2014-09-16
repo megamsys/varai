@@ -1,18 +1,18 @@
-/* 
- ** Copyright [2012-2013] [Megam Systems]
- **
- ** Licensed under the Apache License, Version 2.0 (the "License");
- ** you may not use this file except in compliance with the License.
- ** You may obtain a copy of the License at
- **
- ** http://www.apache.org/licenses/LICENSE-2.0
- **
- ** Unless required by applicable law or agreed to in writing, software
- ** distributed under the License is distributed on an "AS IS" BASIS,
- ** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- ** See the License for the specific language governing permissions and
- ** limitations under the License.
- */
+/**
+ * Copyright 2013, 2014 IBM Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ **/
 
 
 VARAI.view = function() {
@@ -20,8 +20,8 @@ VARAI.view = function() {
         space_height = 5000,
         lineCurveScale = 0.75,
         scaleFactor = 1,
-        node_width = 80,
-        node_height = 80;
+        node_width = 100,
+        node_height = 30;
     
     var touchLongPressTimeout = 1000,
         startTouchDistance = 0,
@@ -304,7 +304,9 @@ VARAI.view = function() {
         workspace_tabs.activateTab(tabId);
         VARAI.history.push({t:'add',workspaces:[ws],dirty:dirty});
         VARAI.view.dirty(true);
-    }
+    }       
+   
+    
     $('#btn-workspace-add-tab').on("click",addWorkspace);
     $('#btn-workspace-add').on("click",addWorkspace);
     $('#btn-workspace-edit').on("click",function() {
@@ -604,11 +606,11 @@ VARAI.view = function() {
     function selectAll() {
         VARAI.nodes.eachNode(function(n) {
             if (n.z == activeWorkspace) {
-           //     if (!n.selected) {
+                if (!n.selected) {
                     n.selected = true;
                     n.dirty = true;
                     moving_set.push({n:n});
-             //   }
+                }
             }
         });
         selected_link = null;
@@ -946,15 +948,15 @@ VARAI.view = function() {
                     d.w = Math.max(node_width,calculateTextWidth(l)+(d._def.inputs>0?7:0) );
                     d.h = Math.max(node_height,(d.outputs||0) * 15);
 
-                  //  if (d._def.badge) {
-                       // var badge = node.append("svg:g").attr("class","node_badge_group");
-                       // var badgeRect = badge.append("rect").attr("class","node_badge").attr("rx",5).attr("ry",5).attr("width",20).attr("height",15);
-                       // badge.append("svg:text").attr("class","node_badge_label").attr("x",35).attr("y",11).attr('text-anchor','end').text(d._def.badge());
-                      //  if (d._def.onbadgeclick) {
-                         //   badgeRect.attr("cursor","pointer")
-                         //       .on("click",function(d) { d._def.onbadgeclick.call(d);d3.event.preventDefault();});
-                       // }
-                    //}
+                    if (d._def.badge) {
+                        var badge = node.append("svg:g").attr("class","node_badge_group");
+                        var badgeRect = badge.append("rect").attr("class","node_badge").attr("rx",5).attr("ry",5).attr("width",40).attr("height",15);
+                        badge.append("svg:text").attr("class","node_badge_label").attr("x",35).attr("y",11).attr('text-anchor','end').text(d._def.badge());
+                        if (d._def.onbadgeclick) {
+                            badgeRect.attr("cursor","pointer")
+                                .on("click",function(d) { d._def.onbadgeclick.call(d);d3.event.preventDefault();});
+                        }
+                    }
 
                     if (d._def.button) {
                         var nodeButtonGroup = node.append('svg:g')
@@ -1031,28 +1033,13 @@ VARAI.view = function() {
                    //node.append("rect").attr("class", "node-gradient-top").attr("rx", 6).attr("ry", 6).attr("height",30).attr("stroke","none").attr("fill","url(#gradient-top)").style("pointer-events","none");
                    //node.append("rect").attr("class", "node-gradient-bottom").attr("rx", 6).attr("ry", 6).attr("height",30).attr("stroke","none").attr("fill","url(#gradient-bottom)").style("pointer-events","none");
 
-             if (d._def.icon) {
+                    if (d._def.icon) {
                         
                         var icon_group = node.append("g")
                             .attr("class","node_icon_group")
-                            .attr("x",10).attr("y",5);                    
-                            
-                        var icon = icon_group.append("image")
-                            .attr("xlink:href","icons/"+d._def.icon)
-                            .attr("class","node_icon")
-                            .attr("x",0).attr("y", 11)
-                            .attr("width","80")
-                            .attr("height","80");
+                            .attr("x",0).attr("y",0);
                         
-                        icon_group.style("pointer-events","none");
-             }
-                /*    if (d._def.icon) {
-                        
-                        var icon_group = node.append("g")
-                            .attr("class","node_icon_group")
-                            .attr("x",10).attr("y",5);
-                        
-                       var icon_shade = icon_group.append("rect")
+                        var icon_shade = icon_group.append("rect")
                             .attr("x",0).attr("y",0)
                             .attr("class","node_icon_shade")
                             .attr("width","30")
@@ -1064,9 +1051,9 @@ VARAI.view = function() {
                         var icon = icon_group.append("image")
                             .attr("xlink:href","icons/"+d._def.icon)
                             .attr("class","node_icon")
-                            .attr("x",0).attr("y", 11)
-                            .attr("width","80")
-                            .attr("height","80");
+                            .attr("x",0)
+                            .attr("width","30")
+                            .attr("height","30");
                             
                         var icon_shade_border = icon_group.append("path")
                             .attr("d",function(d) { return "M 30 1 l 0 "+(d.h-2)})
@@ -1092,11 +1079,11 @@ VARAI.view = function() {
                         //    icon_shade.attr("width",35); //icon.attr("x",5);
                         //}
                         
-                      var img = new Image();
+                        var img = new Image();
                         img.src = "icons/"+d._def.icon;
                         img.onload = function() {
-                            icon.attr("width",Math.min(img.width,80));
-                            icon.attr("height",Math.min(img.height,80));
+                            icon.attr("width",Math.min(img.width,30));
+                            icon.attr("height",Math.min(img.height,30));
                             icon.attr("x",15-Math.min(img.width,30)/2);
                             //if ("right" == d._def.align) {
                             //    icon.attr("x",function(d){return d.w-img.width-1-(d.outputs>0?5:0);});
@@ -1107,7 +1094,7 @@ VARAI.view = function() {
                         
                         //icon.style("pointer-events","none");
                         icon_group.style("pointer-events","none");
-                    } */
+                    }
                     var text = node.append('svg:text').attr('class','node_label').attr('x', 38).attr('dy', '.35em').attr('text-anchor','start');
                     if (d._def.align) {
                         text.attr('class','node_label node_label_'+d._def.align);
@@ -1321,9 +1308,13 @@ VARAI.view = function() {
                     updateSelection();
                     redraw();
                     d3.event.stopPropagation();
-                });
+                });           
             l.append("svg:path").attr("class","link_outline link_path");
-            l.append("svg:path").attr("class","link_line link_path");
+            if (d.source.type == "cloudsettings") {
+               l.append("svg:path").attr("class","link_line link_path");
+            } else {
+            	l.append("svg:path").attr("class","link_line_bind link_path");
+            }
         });
 
         link.exit().remove();
@@ -1481,8 +1472,6 @@ VARAI.view = function() {
     function showExportNodesLibraryDialog() {
         mouse_mode = VARAI.state.EXPORT;
         var nns = VARAI.nodes.createExportableNodeSet(moving_set);
-        console.log(moving_set);
-        console.log(nns);
         $("#dialog-form").html($("script[data-template-name='export-library-dialog']").html());
         $("#node-input-filename").attr('nodes',JSON.stringify(nns));
         $( "#dialog" ).dialog("option","title","Export nodes to library").dialog( "open" );
@@ -1602,6 +1591,7 @@ VARAI.view = function() {
                 mouse_mode = state;
             }
         },
+        loadWorkspace: addWorkspace,
         addWorkspace: function(ws) {
             workspace_tabs.addTab(ws);
             workspace_tabs.resize();

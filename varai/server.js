@@ -32,7 +32,7 @@ function createServer(_server,_settings) {
     server = _server;
     settings = _settings;
     comms.init(_server,_settings);
-    storage = require("./storage");
+    storage = require("./actions");
     app = createUI(settings);
     nodeApp = express();
     
@@ -40,16 +40,33 @@ function createServer(_server,_settings) {
         res.send(varaiNodes.getNodeConfigs());
     });
     
-    app.get("/flows",function(req,res) {
-        res.json(varaiNodes.getFlows());
+    app.get("/cloudsettings", function(req, res) {
+    	varaiNodes.loadCloudSettings().then(function() {	
+    		var cloudsettings = varaiNodes.getCloudSettings();        
+        	res.json(cloudsettings);
+		}).otherwise(function(err) {
+			util.log("[varai] Error loading flows : " + err);
+		});        	
+    });    
+    
+    app.get("/flows",function(req,res) {    	
+    	var cloudsettings = {};    	  
+    	varaiNodes.loadFlows().then(function() {	
+    		var flows = varaiNodes.getFlows();
+        	console.log("+++++++++++++++++++++++++++++++++++get flows++++++++++++++++++++++++++++++++++++++++++++++++");
+        	console.log(flows);
+        	res.json(flows);
+		}).otherwise(function(err) {
+			util.log("[varai] Error loading flows : " + err);
+		});    	
     });  
     
     app.post("/flows",
         express.json(),
         function(req,res) {
-            var flows = req.body;
+            var flows = req.body;    
             varaiNodes.setFlows(flows).then(function() {
-                res.json(204);
+            	res.json(204);
             }).otherwise(function(err) {
                 util.log("[varai] Error saving flows : "+err);
                 res.send(500,err.message);
@@ -85,10 +102,9 @@ function start() {
                 }
                 util.log("------------------------------------------");
             }
-            defer.resolve();
+            defer.resolve();           
             
-            
-            varaiNodes.loadFlows();
+         //   varaiNodes.loadFlows();
         });
         comms.start();
     });

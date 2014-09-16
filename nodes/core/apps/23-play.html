@@ -26,7 +26,7 @@ limitations under the License.
     </div>
       <div class="form-row">
         <label for="node-input-domain"><i class="icon-tag"></i> Domain</label>
-        <input type="text" id="node-input-domain" placeholder="Domain Name" disabled>
+        <input type="text" id="node-input-domain" placeholder="Domain Name">
     </div>
     <div class="form-row">
         <label for="node-input-source"><i class="icon-tag"></i> Source</label>
@@ -40,15 +40,13 @@ limitations under the License.
 </script>
 
 <script type="text/x-red" data-help-name="play">
-    <p>A play input node, that produces a <b>msg.payload</b> containing a <i>BUFFER</i>, string, or base64 encoded string. Supports multicast.</p>
-    <p>It also provides <b>msg.ip</b> and <b>msg.port</b> to the ip address and port from which the message was received.</b>
-    <p>On some systems you may need to be root to use ports below 1024 and/or broadcast.</p>
+  
 </script>
 
 <script type="text/javascript">
     VARAI.nodes.registerType('play',{
         category: 'apps',
-        color:"#d8bfd8",
+        color:"#FF9999",
         defaults: {
         	 name: {value:""},
              app: {value:"", required:true},
@@ -56,8 +54,13 @@ limitations under the License.
              source: {value:"",required:true},
              ha: {value:false,required:true}, 
         },
-        inputs:0,
+        label: function() {
+            return this.name||"play";
+        },
+        inputs:1,
         outputs:1,
+      //  top:1,
+      //  bottom:0,
         icon: "play.png",
       //  label: function() {
       //      if (this.multicast=="false") {

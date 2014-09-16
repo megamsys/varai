@@ -14,54 +14,52 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-<script type="text/x-red" data-template-name="redis out">
-    <div class="form-row node-input-hostname">
-        <label for="node-input-hostname"><i class="fa fa-bookmark"></i> Host</label>
-        <input class="input-append-left" type="text" id="node-input-hostname" placeholder="127.0.0.1" style="width: 40%;" ><button id="node-input-hostname-lookup" class="btn input-append-right"><span class="caret"></span></button>
-        <label for="node-input-port" style="margin-left: 10px; width: 35px; "> Port</label>
-        <input type="text" id="node-input-port" placeholder="6379" style="width:45px">
-    </div>
-    <div class="form-row">
-        <label for="node-input-key"><i class="fa fa-key"></i> Key</label>
-        <input type="text" id="node-input-key" placeholder="Redis Key">
-    </div>
-    <div class="form-row">
-        <label for="node-input-type"><i class="fa fa-th"></i> Type</label>
-        <select type="text" id="node-input-structtype" style="width: 150px;">
-        <option value="string">String</option>
-        <option value="hash">Hash</option>
-        <option value="set">Set</option>
-        <option value="list">List</option>
-        </select>
-    </div>
-    <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+<script type="text/x-red" data-template-name="redis">
+<div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
+    </div>    
+    <div class="form-row">
+        <label for="node-input-app"><i class="icon-tag"></i> Application</label>
+        <input type="text" id="node-input-app" placeholder="Application Name">
     </div>
-    <div class="form-tips">
+      <div class="form-row">
+        <label for="node-input-domain"><i class="icon-tag"></i> Domain</label>
+        <input type="text" id="node-input-domain" placeholder="Domain Name">
+    </div>
+    <div class="form-row">        
+        <label for="node-input-port"><i class="icon-tag"></i> Port</label>
+        <input type="text" id="node-input-port" placeholder="6379" value="6379" disabled>
+    </div>       
+    
+   <!-- <div class="form-tips">
         If key is blank, the topic will be used as the key.<br>
         If type is hash, payload should be field=value.
-    </div>
+    </div> -->
 </script>
 
-<script type="text/x-red" data-help-name="redis out">
-    <p>A Redis output node. Options include Hash, Set, List and String.</p>
-    <p>To run this you need a local Redis server running. For details see <a href="http://redis.io/" target="_new">the Redis site</a>.</p>
+<script type="text/x-red" data-help-name="redis">
+ 
 </script>
 
 <script type="text/javascript">
-    VARAI.nodes.registerType('redis out',{
+    VARAI.nodes.registerType('redis',{
         category: 'storage-output',
-        color:"#ffaaaa",
+        color:"#999966",
         defaults: {
-            hostname: { value:"127.0.0.1",required:true},
+            name: { value:"",required:true},
+            app:  { value:"",required:true},
+            domain: { value: "",required:true},
             port: { value: 6379,required:true},
-            name: {value:""},
-            key: {value:""},
-            structtype: {value:"",required:true}
+            
+        },
+        label: function() {
+            return this.name||"redis";
         },
         inputs:1,
         outputs:0,
+    //    top:1,
+     //   bottom:0,
         icon: "redis.png",
         align: "right",
      //   label: function() {

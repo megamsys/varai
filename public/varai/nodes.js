@@ -23,7 +23,8 @@ VARAI.nodes = function() {
     var links = [];
     var defaultWorkspace;
     var workspaces = {};
-   
+    var obj = JSON.parse("{}");
+    
     function registerType(nt,def) {
         node_defs[nt] = def;
         // TODO: too tightly coupled into palette UI
@@ -203,7 +204,11 @@ VARAI.nodes = function() {
             for(var i=0;i<n.outputs;i++) {
                 node.wires.push([]);
             }
-            var wires = links.filter(function(d){return d.source === n;});
+            console.log("----------links----------------");
+            console.log(links);
+            console.log(n._def.category);
+            var wires = links.filter(function(d){
+            	return d.source === n;});
             for (var i in wires) {
                 var w = wires[i];
                 node.wires[w.sourcePort].push(w.target.id);
@@ -376,11 +381,14 @@ VARAI.nodes = function() {
                 var n = new_nodes[i];
                 for (var w1 in n.wires) {
                     var wires = (n.wires[w1] instanceof Array)?n.wires[w1]:[n.wires[w1]];
+                    console.log("============wires"+wires);
                     for (var w2 in wires) {
                         if (wires[w2] in node_map) {
                             var link = {source:n,sourcePort:w1,target:node_map[wires[w2]]};
                             addLink(link);
+                            console.log("============links"+new_links);
                             new_links.push(link);
+                            console.log("============after links"+new_links);
                         }
                     }
                 }
@@ -394,6 +402,176 @@ VARAI.nodes = function() {
         }
 
     }
+    
+    function assemblyJson(data) {
+    	var groups = [];
+    	var assemblies_array = [];
+    	var ha_policy_flag = false;
+    	var css = [];
+    	
+    	//group(assembly) array    
+    	    	for(i=1;i<data.length; i++) {
+    	if(data[i].type != "cloudsettings") {
+    		groups.push(data[i].app);    
+    	  } else {
+    		  css.push(data[i]);
+    	  }
+    	}
+    	
+    	//copy data to duplicate data
+        var duplicateData = data;
+        
+        //set app id to wired service 
+    	for(k=1;k<data.length;k++) { 
+    	 if ((data[k].wires[0]).length > 0 && data[k].type != "cloudsettings") {
+        	$.each(data[k].wires[0], function (rci1, rc1) {
+        		for(i=1;i<duplicateData.length; i++) {  
+          		  if(rc1 == duplicateData[i].id) {          			
+          			var linkid = [];
+          			linkid.push(data[k].id);
+          			duplicateData[i].wires.push(linkid);
+          			}
+              	}
+       	    });
+          }           
+    	}
+    	
+    	//put changes to original data 
+    	data = duplicateData;
+    	duplicateData = data
+    	groups = eliminateDuplicates(groups);
+    	
+    	//create assembly json
+    	for(j=0;j<groups.length; j++) {
+    		ha_policy_flag = false;
+    		assembly = JSON.parse("{}");
+    		assembly.name = groups[j];
+    		assembly.components = [];
+    		
+    		for(i=1;i<data.length; i++) {  
+    		  if(groups[j] == data[i].app) {
+        		if(data[i].ha == true) {
+        			ha_policy_flag = true;
+        		  }
+    			}
+        	}
+    		if(ha_policy_flag == true) {
+    		    assembly.policies = JSON.parse("{}");
+    		    assembly.policies.ha_policy = JSON.parse("{}");
+                assembly.policies.ha_policy.name = "HA policy";
+                assembly.policies.ha_policy.type = "colocated"; 
+                assembly.policies.ha_policy.members = [];
+    		}
+            
+    		//create components json for assembly
+    		for(k=1;k<data.length;k++) {    			
+    			if(groups[j] == data[k].app) {
+    				var component = JSON.parse("{}");    			
+    				component.name = data[k].name
+    				component.tosca_type = "tosca.web."+data[k].type
+    				component.requirements = JSON.parse("{}");
+    				component.requirements.host = "" 
+    					
+    				// put wired cloudsetting name to component host	
+    				$.each(css, function (csi, csitem) {    				
+    					$.each(csitem.wires[0], function (csj, nodeid) {    						
+        	        		if(nodeid == data[k].id) {        	        		
+        	        			component.requirements.host = csitem.cloudsettings; 
+        	        		} 
+       	        	    });
+    	        	 });
+                      
+                    component.requirements.dummy = "" 
+                    component.inputs = JSON.parse("{}");                    
+                    component.inputs.domain = data[k].domain || ""
+                    component.inputs.port = data[k].port || ""
+                    component.inputs.username = data[k].username || ""
+                    component.inputs.password = data[k].password || ""                    
+                    component.inputs.version = data[k].version || ""
+                    component.inputs.source = data[k].source || ""
+                    component.inputs.design_inputs = JSON.parse("{}");   
+                    component.inputs.design_inputs.id = data[k].id
+                    component.inputs.design_inputs.x = data[k].x
+                    component.inputs.design_inputs.y = data[k].y
+                    component.inputs.design_inputs.z = data[k].z
+                    var wires = [];
+                    component.inputs.design_inputs.wires = data[k].wires[0] || wires
+                    component.inputs.service_inputs = JSON.parse("{}"); 
+                    component.inputs.service_inputs.dbname = data[k].dbname || ""
+                    component.inputs.service_inputs.dbpassword = data[k].dbpassword || ""
+                  //  component.external_management_resource = JSON.parse("{}");
+                  //  component.external_management_resource.url = "";
+                    component.external_management_resource = "";
+                    component.artifacts =JSON.parse("{}");
+                    component.artifacts.artifact_type = "tosca type";
+                    component.artifacts.content = "";
+                    component.artifacts.requirements = "";
+                  //  component.artifacts.requirements = JSON.parse("{}");
+                  //  component.artifacts.requirements.requirement_type = "create";
+                    
+                    //related components
+                    component.related_components = "";
+                    if ((data[k].wires[0]).length > 0 ) {
+                    	$.each(data[k].wires[0], function (rci, rc) {
+                    		for(s=1;s<duplicateData.length; s++) {  
+                      		  if(rc == duplicateData[s].id) {
+                      			component.related_components = duplicateData[s].app+"."+duplicateData[s].domain+"/"+duplicateData[s].name;
+                      			}
+                          	}
+       	        	    });
+                    }                     
+                    component.operations = JSON.parse("{}");
+                    component.operations.operation_type = "";
+                    component.operations.target_resource = "";
+                    assembly.components.push(component);
+                    assembly.policies = "";
+                 //   if(data[k].ha == true) {
+                  //  	assembly.policies.ha_policy.members.push(data[k].name);
+                  //  }
+    			}
+    		}
+    		assembly.inputs = "";
+    		assembly.operations = "";
+    		
+            assemblies_array.push(assembly);
+    	}
+	     obj.name = data[0].label;
+         obj.assemblies = assemblies_array;
+         obj.inputs = JSON.parse("{}");
+         obj.inputs.id = data[0].id;
+         obj.inputs.assemblies_type = data[0].type;
+         obj.inputs.label = data[0].label;
+         obj.inputs.cloudsettings = [];
+         $.each(css, function (p, item) {
+        	 var cloud_settings = JSON.parse("{}");
+        	 cloud_settings.id = item.id;
+        	 cloud_settings.cstype = item.type;
+        	 cloud_settings.cloudsettings = item.cloudsettings
+        	 cloud_settings.x = item.x;
+        	 cloud_settings.y = item.y;
+        	 cloud_settings.z = item.z;
+        	 cloud_settings.wires = item.wires[0];
+        	 obj.inputs.cloudsettings.push(cloud_settings);
+    	 });
+         
+        console.log(JSON.stringify(obj));
+        return obj;
+	 }
+    
+    function eliminateDuplicates(arr) {
+    	var i,
+    	  len=arr.length,
+    	  out=[],
+    	  obj={};
+
+    	 for (i=0;i<len;i++) {
+    	 obj[arr[i]]=0;
+    	 }
+    	 for (i in obj) {
+    	 out.push(i);
+    	 }
+    	 return out;
+    	}
 
     return {
         registerType: registerType,
@@ -428,6 +606,7 @@ VARAI.nodes = function() {
         createExportableNodeSet: createExportableNodeSet,
         createCompleteNodeSet: createCompleteNodeSet,
         id: getID,
+        assemblyJson:assemblyJson,
         nodes: nodes, // TODO: exposed for d3 vis
         links: links  // TODO: exposed for d3 vis
     };

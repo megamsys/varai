@@ -21,7 +21,7 @@ VARAI.palette = function() {
     var core = ['apps', 'storage'];
     
     function createCategoryContainer(category){
-
+       
         $("#palette-container").append('\
             <div class="palette-category">\
             <div id="header-'+category+'" class="palette-header"><i class="expanded icon-chevron-down"></i><span>'+category+'</span></div>\
@@ -71,14 +71,27 @@ VARAI.palette = function() {
           if (def.outputs > 0) {
               var port = document.createElement("div");
               port.className = "palette_port palette_port_output";
-              d.appendChild(port);
+              d.appendChild(port);            
           }
           
           if (def.inputs > 0) {
               var port = document.createElement("div");
               port.className = "palette_port";
+              d.appendChild(port);             
+          }
+
+       /*   if (def.top > 0) {           
+              var port = document.createElement("div");
+              port.className = "palette_port palette_port_top";
               d.appendChild(port);
           }
+          
+          if (def.bottom > 0) {
+              var port = document.createElement("div");
+              port.className = "palette_port";
+              d.appendChild(port);             
+          }*/
+          
           
           if($("#palette-base-category-"+category[0]).length == 0){
             createCategoryContainer(category[0]);

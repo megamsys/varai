@@ -43,7 +43,10 @@
         "uglify-js":"2.4.13",
         "redis":"0.11.0",
         "random-words":"0.0.1",
-        "type-of-is":"3.3.0"
+        "type-of-is":"3.3.0",
+        "time":"0.11.0",
+        "request":"2.40.0",
+        "exit":"0.1.2"
     },
     "devDependencies": {
         "grunt": "0.4.4",

@@ -104,5 +104,5 @@ module.exports = function(VARAI) {
             redisConnectionPool.close(node.client);
         });
    */ }
-    VARAI.nodes.registerType("redis out",RedisOutNode);
+    VARAI.nodes.registerType("redis",RedisOutNode);
 }

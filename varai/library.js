@@ -19,7 +19,7 @@ var storage = null;
 
 function init() {
     varaiApp = require("./server").app;
-    storage = require("./storage");
+    storage = require("./actions");
     
     // -------- Flow Library --------
     varaiApp.post(new RegExp("/library/flows\/(.*)"), function(req,res) {

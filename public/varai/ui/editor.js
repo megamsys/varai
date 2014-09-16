@@ -15,6 +15,7 @@
  */
 VARAI.editor = function() {
     var editing_node = null;
+    var cloudsettings = {};
     // TODO: should IMPORT/EXPORT get their own dialogs?
 
     function getCredentialsURL(nodeType, nodeID) {
@@ -442,10 +443,29 @@ VARAI.editor = function() {
         }
     }
 
+    function updateCloudSettings(cs) {
+    	cloudsettings = cs;
+    }
+    
+    function parseCloudSettings(cs) {
+    	var cs_response = JSON.parse(cs);
+    	return cs_response.results;
+    }
+    
     function showEditDialog(node) {
         editing_node = node;
-        VARAI.view.state(VARAI.state.EDITING);
+        VARAI.view.state(VARAI.state.EDITING);      
         $("#dialog-form").html($("script[data-template-name='"+node.type+"']").html());
+        if (node.type == "cloudsettings") {
+        	var css = parseCloudSettings(cloudsettings);
+        	$.each(css, function (i, item) {
+        		//var cs = JSON.parse(item);
+        	    $('#node-input-cloudsettings').append($('<option>', { 
+        	        value: item.name,
+        	        text : item.name 
+        	    }));
+        	});
+        }
         prepareEditDialog(node,node._def,"node-input");
         $( "#dialog" ).dialog("option","title","Edit "+node.type+" node").dialog( "open" );
     }
@@ -634,6 +654,7 @@ VARAI.editor = function() {
     return {
         edit: showEditDialog,
         editConfig: showEditConfigNodeDialog,
+        update: updateCloudSettings,
         validateNode: validateNode,
         updateNodeProperties: updateNodeProperties // TODO: only exposed for edit-undo
     }

@@ -79,19 +79,19 @@ var VARAI = function() {
             
             $("#btn-icn-deploy").removeClass('icon-upload');
             $("#btn-icn-deploy").addClass('spinner');
-            VARAI.view.dirty(false);
-            console.log("++++++++++++++++++++++++++");
-            console.log(JSON.stringify(nns));
-            console.log(nns.length);
+            VARAI.view.dirty(false);            
+         
             //assemblies JSON creation 
+            console.log(JSON.stringify(nns));
+            var json = VARAI.nodes.assemblyJson(nns);
             
-            
-            $.ajax({
+                       
+           $.ajax({
                 url:"flows",
                 type: "POST",
-                data: JSON.stringify(nns),
+                data: JSON.stringify(json),
                 contentType: "application/json; charset=utf-8"
-            }).done(function(data,textStatus,xhr) {
+            }).done(function(data,textStatus,xhr) {            	
                 VARAI.notify("Successfully deployed","success");
                 VARAI.nodes.eachNode(function(node) {
                     if (node.changed) {
@@ -148,7 +148,21 @@ var VARAI = function() {
                 }
             ]
     });
+    
+    var workspaceIndex = 0;
+    
+    function setWorkSpace() {
+    	/* var tabId = VARAI.nodes.id();
+         do {
+             workspaceIndex += 1;
+         } while($("#workspace-tabs a[title='Sheet "+workspaceIndex+"']").size() != 0);
 
+         var ws = {type:"tab",id:tabId,label:"Sheet "+workspaceIndex};
+    	VARAI.view.addWorkspace(ws);*/
+    	VARAI.view.loadWorkspace();
+    }
+    
+     //add route for /:id
     function loadSettings() {
         $.get('settings', function(data) {
             VARAI.settings = data;
@@ -162,12 +176,22 @@ var VARAI = function() {
             $(".palette-spinner").hide();
             $(".palette-scroll").show();
             $("#palette-search").show();
-            loadFlows();
+            //loadFlows();
+            loadCloudSettings();
         });
     }
 
+    function loadCloudSettings() {
+        $.getJSON("cloudsettings",function(cs) {
+        	console.log(cs);        	
+        	VARAI.editor.update(cs);
+        });
+    }
+    
     function loadFlows() {
         $.getJSON("flows",function(nodes) {
+        	console.log(nodes);
+        	
             VARAI.nodes.import(nodes);
             VARAI.view.dirty(false);
             VARAI.view.redraw();
@@ -214,6 +238,7 @@ var VARAI = function() {
 
     $(function() {
         VARAI.keyboard.add(/* ? */ 191,{shift:true},function(){showHelp();d3.event.preventDefault();});
+        setWorkSpace();
         loadSettings();
         VARAI.comms.connect();
     });

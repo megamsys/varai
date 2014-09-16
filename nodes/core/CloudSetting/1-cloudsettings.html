@@ -1,0 +1,53 @@
+<!--
+  Copyright [2012-2013] [Megam Systems]
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<!--  The Input Node  -->
+<script type="text/x-red" data-template-name="cloudsettings">     
+    <div class="form-row">
+        <label for="node-input-cloudsettings"><i class="icon-list"></i> Group</label>
+        <select id="node-input-cloudsettings" style="width: 70%;">
+           
+        </select>
+    </div> 
+       
+   
+</script>
+
+<script type="text/x-red" data-help-name="cloudsettings">
+  
+</script>
+
+<script type="text/javascript">
+     // var vv = VARAI.nodes.randomword();
+    //  console.log(vv);
+    VARAI.nodes.registerType('cloudsettings',{
+        category: 'cloudsettings',
+        color:"#0099CC",
+        defaults: {
+        	cloudsettings: {value:"",required:true}        
+        },
+        label: function() {
+            return this.name||"cloudsettings";
+        },
+        inputs:0,
+        outputs:1,
+      //  top:0,
+      //  bottom:1,
+        icon: "cloud.png",
+     });
+</script>
+
+
