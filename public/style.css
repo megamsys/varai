@@ -249,9 +249,19 @@ a.brand img {
     left:85px;
 }
 
+/*.palette_port_top {
+    top:-5px;
+    left:40px; 
+}
+
+.palette_port_bottom {
+    top:26px;
+    left:40px; 
+}*/
+
 .palette_node:hover .palette_port {
   border-color: #999;
-  background-color: #eee;
+  background-color: #00FFFF;
 }
 
 #sidebar {
@@ -259,11 +269,19 @@ a.brand img {
     box-sizing: border-box;
     -moz-box-sizing: border-box;    
 }
+
+#sidebar1 {
+    background: #fff;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;    
+}
+
 #sidebar.closing {
     background: #eee;
     border-color: #900;
     border-style: dashed;
 }
+
 
 /* ---------- Layout ---------- */
 #main-container {
@@ -287,8 +305,15 @@ a.brand img {
 #sidebar {
     width: 305px;
     position: absolute;
-    right: 10px; top: 5px; bottom:10px;
+    right: 10px; top: 5px; bottom:50%;
 }
+
+#sidebar1 {
+    width: 305px;
+    position: absolute;
+    right: 10px; top: 50%; bottom:10px;
+}
+
 #sidebar-separator {
     width: 15px;
     background: url(grip.png) no-repeat 50% 50%;
@@ -339,7 +364,7 @@ a.brand img {
     margin-left: 20px;
 }
 
-#workspace, #palette, #sidebar {
+#workspace, #palette, #sidebar, #sidebar1 {
    border: 1px solid #000;
    border-radius: 3px;
 }
@@ -348,6 +373,13 @@ a.brand img {
     overflow-y: auto;
     position: absolute;
     top: 30px; left: 0px; right: 0; bottom: 1px;
+}
+
+#sidebar-content1 {
+    font-size: 1.2em;
+    overflow-y: auto;
+    position: absolute;
+    top: 50%; left: 0px; right: 0; bottom: 1px;
 }
 
 .node_label_italic {
@@ -470,6 +502,13 @@ a.brand img {
 
 .link_line {
   stroke: #7f7f7f;
+  stroke-width: 4;
+  fill: none;
+  pointer-events: none;
+}
+
+.link_line_bind {
+  stroke: #0000FF;
   stroke-width: 4;
   fill: none;
   pointer-events: none;

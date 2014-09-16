@@ -292,7 +292,9 @@ var typeRegistry = module.exports = {
             result += node_configs[i];
         }
         result += '<script type="text/javascript">';
+        
         for (var j=0;j<node_scripts.length;j++) {
+        	console.log(node_scripts[j]);
             result += node_scripts[j];
         }
         result += '</script>';

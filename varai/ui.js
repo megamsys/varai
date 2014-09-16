@@ -34,8 +34,11 @@ function setupUI(settings) {
     // Need to ensure the url ends with a '/' so the static serving works
     // with relative paths
     app.get("/",function(req,res) {
+    	console.log(req.originalUrl);
+    	console.log(req.originalUrl.slice(-1));
+    	console.log(req.query.email);
         if (req.originalUrl.slice(-1) != "/") {
-            res.redirect(req.originalUrl+"/");
+           res.redirect(req.originalUrl+"/");
         } else {
             req.next();
         }

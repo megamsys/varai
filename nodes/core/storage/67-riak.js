@@ -18,7 +18,7 @@ module.exports = function(VARAI) {
     var dgram = require('dgram');
 
     // The Input Node
-    function riakin(n) {
+  /*  function riakin(n) {
         VARAI.nodes.createNode(this,n);
         this.group = n.group;
         this.port = n.port;
@@ -80,13 +80,13 @@ module.exports = function(VARAI) {
             }
         });
 
-        server.bind(node.port,node.iface);
-    }
-    VARAI.nodes.registerType("riak in",riakin);
+        server.bind(node.port,node.iface); 
+    }*/
+  //  VARAI.nodes.registerType("riak in",riakin);
 
 
     // The Output Node
-    function riakout(n) {
+    function riakout(n) {/*
         VARAI.nodes.createNode(this,n);
         //this.group = n.group;
         this.port = n.port;
@@ -164,7 +164,7 @@ module.exports = function(VARAI) {
             } catch (err) {
                 node.error(err);
             }
-        });
+        });*/
     }
-    VARAI.nodes.registerType("riak out",riakout);
+    VARAI.nodes.registerType("riak",riakout);
 }

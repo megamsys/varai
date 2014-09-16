@@ -19,7 +19,7 @@ module.exports = function(VARAI) {
     var dgram = require('dgram');
 
     // The Input Node
-    function psqlin(n) {
+  /*  function psqlin(n) {
         VARAI.nodes.createNode(this,n);
         this.group = n.group;
         this.port = n.port;
@@ -82,13 +82,13 @@ module.exports = function(VARAI) {
         });
 
         server.bind(node.port,node.iface);
-    }
-    VARAI.nodes.registerType("psql in",psqlin);
+    }*/
+  //  VARAI.nodes.registerType("psql",psqlin);
 
 
     // The Output Node
     function psqlout(n) {
-        VARAI.nodes.createNode(this,n);
+      /*  VARAI.nodes.createNode(this,n);
         //this.group = n.group;
         this.port = n.port;
         this.outport = n.outport||"";
@@ -165,7 +165,7 @@ module.exports = function(VARAI) {
             } catch (err) {
                 node.error(err);
             }
-        });
+        });*/
     }
-    VARAI.nodes.registerType("psql out",psqlout);
+    VARAI.nodes.registerType("psql",psqlout);
 }
