@@ -45,7 +45,7 @@ VARAI.sidebar.info = function() {
 
         table += "<tr><td>Type</td><td>&nbsp;"+node.type+"</td></tr>";
         table += "<tr><td>ID</td><td>&nbsp;"+node.id+"</td></tr>";
-        table += '<tr class="blank"><td colspan="2">&nbsp;Properties sample</td></tr>';
+        table += '<tr class="blank"><td colspan="2">&nbsp;Properties</td></tr>';
         for (var n in node._def.defaults) {
             var val = node[n]||"";
             var type = typeof val;
