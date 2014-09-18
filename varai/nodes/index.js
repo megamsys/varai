@@ -63,10 +63,13 @@ module.exports = {
     
     loadFlows: flows.load,
     stopFlows: flows.stopFlows,
-    setFlows: flows.setFlows,
+    postFlows: flows.postFlows,
+    getPostResult: flows.getPostResult,
     getFlows: flows.getFlows,
     loadCloudSettings: flows.loadCloudSettings,
     getCloudSettings: flows.getCloudSettings,
+    loadDomains: flows.loadDomains,
+    getDomains: flows.getDomains,
     // TODO: remove these from api - see #93
     addCredentials: credentials.add,
     getCredentials: credentials.get,

@@ -303,7 +303,7 @@ VARAI.view = function() {
         workspace_tabs.addTab(ws);
         workspace_tabs.activateTab(tabId);
         VARAI.history.push({t:'add',workspaces:[ws],dirty:dirty});
-        VARAI.view.dirty(true);
+       // VARAI.view.dirty(true);
     }       
    
     
@@ -705,7 +705,8 @@ VARAI.view = function() {
     function deleteSelection() {
         var removedNodes = [];
         var removedLinks = [];
-        var startDirty = dirty;
+        var startDirty = dirty;        
+        
         if (moving_set.length > 0) {
             for (var i in moving_set) {
                 var node = moving_set[i].n;
@@ -716,18 +717,21 @@ VARAI.view = function() {
                 removedLinks = removedLinks.concat(rmlinks);
             }
             moving_set = [];
-            setDirty(true);
+          //  setDirty(true);
         }
         if (selected_link) {
             VARAI.nodes.removeLink(selected_link);
             removedLinks.push(selected_link);
-            setDirty(true);
+          //  setDirty(true);
         }
         VARAI.history.push({t:'delete',nodes:removedNodes,links:removedLinks,dirty:startDirty});
 
         selected_link = null;
         updateSelection();
         redraw();
+        if (VARAI.nodes.nodes.length == 0) {
+        	setDirty(false);
+        }
     }
 
     function copySelection() {
@@ -932,7 +936,7 @@ VARAI.view = function() {
     function redraw() {
         vis.attr("transform","scale("+scaleFactor+")");
         outer.attr("width", space_width*scaleFactor).attr("height", space_height*scaleFactor);
-
+        
         if (mouse_mode != VARAI.state.JOINING) {
             // Don't bother redrawing nodes if we're drawing links
 
@@ -948,7 +952,7 @@ VARAI.view = function() {
                     d.w = Math.max(node_width,calculateTextWidth(l)+(d._def.inputs>0?7:0) );
                     d.h = Math.max(node_height,(d.outputs||0) * 15);
 
-                    if (d._def.badge) {
+                    /*if (d._def.badge) {
                         var badge = node.append("svg:g").attr("class","node_badge_group");
                         var badgeRect = badge.append("rect").attr("class","node_badge").attr("rx",5).attr("ry",5).attr("width",40).attr("height",15);
                         badge.append("svg:text").attr("class","node_badge_label").attr("x",35).attr("y",11).attr('text-anchor','end').text(d._def.badge());
@@ -956,9 +960,9 @@ VARAI.view = function() {
                             badgeRect.attr("cursor","pointer")
                                 .on("click",function(d) { d._def.onbadgeclick.call(d);d3.event.preventDefault();});
                         }
-                    }
+                    } */
 
-                    if (d._def.button) {
+                  /*  if (d._def.button) {
                         var nodeButtonGroup = node.append('svg:g')
                             .attr("transform",function(d) { return "translate("+((d._def.align == "right") ? 94 : -25)+",2)"; })
                             .attr("class",function(d) { return "node_button "+((d._def.align == "right") ? "node_right_button" : "node_left_button"); });
@@ -989,7 +993,7 @@ VARAI.view = function() {
                             }})
                             .on("click",nodeButtonClicked)
                             .on("touchstart",nodeButtonClicked)
-                    }
+                    } */
 
                     var mainRect = node.append("rect")
                         .attr("class", "node")
@@ -1046,7 +1050,7 @@ VARAI.view = function() {
                             .attr("stroke","none")
                             .attr("fill","#000")
                             .attr("fill-opacity","0.05")
-                            .attr("height",function(d){return Math.min(50,d.h-4);});
+                            .attr("height",function(d){return Math.min(50,d.h-4);}); 
                             
                         var icon = icon_group.append("image")
                             .attr("xlink:href","icons/"+d._def.icon)
@@ -1070,14 +1074,14 @@ VARAI.view = function() {
                             //icon.attr('class','node_icon_shade_border node_icon_shade_border_'+d._def.align);
                         }
                         
-                        //if (d._def.inputs > 0 && d._def.align == null) {
-                        //    icon_shade.attr("width",35);
-                        //    icon.attr("transform","translate(5,0)");
-                        //    icon_shade_border.attr("transform","translate(5,0)");
-                        //}
-                        //if (d._def.outputs > 0 && "right" == d._def.align) {
-                        //    icon_shade.attr("width",35); //icon.attr("x",5);
-                        //}
+                        if (d._def.inputs > 0 && d._def.align == null) {
+                            icon_shade.attr("width",35);
+                            icon.attr("transform","translate(5,0)");
+                            icon_shade_border.attr("transform","translate(5,0)");
+                        }
+                        if (d._def.outputs > 0 && "right" == d._def.align) {
+                            icon_shade.attr("width",35); //icon.attr("x",5);
+                        }
                         
                         var img = new Image();
                         img.src = "icons/"+d._def.icon;
@@ -1101,7 +1105,7 @@ VARAI.view = function() {
                         text.attr('text-anchor','end');
                     }
 
-                    var status = node.append("svg:g").attr("class","node_status_group").style("display","none");
+                 /*   var status = node.append("svg:g").attr("class","node_status_group").style("display","none");
 
                     var statusRect = status.append("rect").attr("class","node_status")
                                         .attr("x",6).attr("y",1).attr("width",9).attr("height",9)
@@ -1116,7 +1120,7 @@ VARAI.view = function() {
                                 'font-size':'9pt',
                                 'stroke':'#000',
                                 'text-anchor':'start'
-                        });
+                        }); */
 
                     //node.append("circle").attr({"class":"centerDot","cx":0,"cy":0,"r":5});
 
@@ -1132,8 +1136,8 @@ VARAI.view = function() {
                     }
 
                     //node.append("path").attr("class","node_error").attr("d","M 3,-3 l 10,0 l -5,-8 z");
-                    node.append("image").attr("class","node_error hidden").attr("xlink:href","icons/node-error.png").attr("x",0).attr("y",-6).attr("width",10).attr("height",9);
-                    node.append("image").attr("class","node_changed hidden").attr("xlink:href","icons/node-changed.png").attr("x",12).attr("y",-6).attr("width",10).attr("height",10);
+                 //   node.append("image").attr("class","node_error hidden").attr("xlink:href","icons/node-error.png").attr("x",0).attr("y",-6).attr("width",10).attr("height",9);
+                   // node.append("image").attr("class","node_changed hidden").attr("xlink:href","icons/node-changed.png").attr("x",12).attr("y",-6).attr("width",10).attr("height",10);
             });
 
             node.each(function(d,i) {
@@ -1290,7 +1294,9 @@ VARAI.view = function() {
 
         var linkEnter = link.enter().insert("g",".node").attr("class","link");
         
+        //draw link 
         linkEnter.each(function(d,i) {
+        	if (d.source._def.category != d.target._def.category) {
             var l = d3.select(this);
             l.append("svg:path").attr("class","link_background link_path")
                .on("mousedown",function(d) {
@@ -1315,7 +1321,8 @@ VARAI.view = function() {
             } else {
             	l.append("svg:path").attr("class","link_line_bind link_path");
             }
-        });
+         } 
+        }); 
 
         link.exit().remove();
 
@@ -1372,6 +1379,8 @@ VARAI.view = function() {
     // TODO: 'dirty' should be a property of VARAI.nodes - with an event callback for ui hooks
     function setDirty(d) {
         dirty = d;
+        console.log("---------------------------------------------------");
+        console.log(dirty);
         if (dirty) {
             $("#btn-deploy").removeClass("disabled").addClass("btn-danger");
         } else {

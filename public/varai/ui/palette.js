@@ -18,7 +18,8 @@ VARAI.palette = function() {
 
     var exclusion = ['config','unknown','deprecated'];
    // var core = ['input', 'output', 'function', 'social', 'storage', 'analysis', 'advanced'];
-    var core = ['apps', 'storage'];
+ //   var core = ['Apps', 'App Boilers'];
+    var core = [];
     
     function createCategoryContainer(category){
        

@@ -46,7 +46,8 @@
         "type-of-is":"3.3.0",
         "time":"0.11.0",
         "request":"2.40.0",
-        "exit":"0.1.2"
+        "exit":"0.1.2",
+        "random-words":"0.0.1"
     },
     "devDependencies": {
         "grunt": "0.4.4",

@@ -27,7 +27,7 @@ limitations under the License.
     </div>
       <div class="form-row">
         <label for="node-input-domain"><i class="icon-tag"></i> Domain</label>
-        <input type="text" id="node-input-domain" placeholder="Domain Name">
+        <input type="text" id="node-input-domain" placeholder="Domain Name" disabled>
     </div>
     <div class="form-row">        
         <label for="node-input-version"><i class="icon-tag"></i> Version</label>
@@ -43,7 +43,7 @@ limitations under the License.
 
 <script type="text/javascript">
     VARAI.nodes.registerType('riak',{
-        category: 'storage',
+        category: 'AppBoilers',
         color:"#999966",
         defaults: {
         	name: { value:"",required:true},

@@ -25,7 +25,7 @@ limitations under the License.
     </div>
       <div class="form-row">
         <label for="node-input-domain"><i class="icon-tag"></i> Domain</label>
-        <input type="text" id="node-input-domain" placeholder="Domain Name">
+        <input type="text" id="node-input-domain" placeholder="Domain Name" disabled>
     </div>
     <div class="form-row">        
         <label for="node-input-port"><i class="icon-tag"></i> Port</label>
@@ -44,7 +44,7 @@ limitations under the License.
 
 <script type="text/javascript">
     VARAI.nodes.registerType('redis',{
-        category: 'storage-output',
+        category: 'AppBoilers',
         color:"#999966",
         defaults: {
             name: { value:"",required:true},
@@ -57,47 +57,8 @@ limitations under the License.
             return this.name||"redis";
         },
         inputs:1,
-        outputs:0,
-    //    top:1,
-     //   bottom:0,
+        outputs:0,  
         icon: "redis.png",
-        align: "right",
-     //   label: function() {
-      //      return this.name||this.key+" ("+this.structtype+")";
-      //  },
-    /*    oneditprepare: function() {
-            var availableServers = [];
-            var matchedServers = {};
-            VARAI.nodes.eachNode(function(node) {
-                if (node.type == "redis out" && node.hostname && node.port && !matchedServers[node.hostname+":"+node.port]) {
-                    var label = node.hostname+":"+node.port;
-                    matchedServers[label] = true;
-                    availableServers.push({
-                        label:label,
-                        value:node.hostname,
-                        port:node.port
-                    });
-                }
-            });
-            $( "#node-input-hostname" ).autocomplete({
-                minLength: 0,
-                source: availableServers,
-                select: function( event, ui ) {
-                    $("#node-input-port").val(ui.item.port);
-                }
-            });
-            var tt = this;
-            tt._acOpen = false;
-            $( "#node-input-hostname" ).on( "autocompleteclose", function( event, ui ) { tt._acOpen = false;} );
-            $( "#node-input-hostname-lookup" ).click(function(e) {
-                if (tt._acOpen) {
-                    $( "#node-input-hostname" ).autocomplete( "close");
-                } else {
-                    $( "#node-input-hostname" ).autocomplete( "search", "" );
-                }
-                tt._acOpen = !tt._acOpen;
-                e.preventDefault();
-            });
-        }*/
+        align: "right",   
     });
 </script>

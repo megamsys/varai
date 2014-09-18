@@ -26,12 +26,17 @@ var time = require('time');
 var now = new time.Date();
 var version = "/v2";
 var result = {};
+var post_result = {};
 var host = 'https://api.megam.co';
 
 var megam = module.exports = {
 
 	getData : function() {
 		return result;
+	},
+	
+	getPostData : function() {
+		return post_result;
 	},
 	
 	loadFlows : function(id, url) {
@@ -50,8 +55,8 @@ var megam = module.exports = {
 			method : 'GET',
 			headers : {
 				'X-Megam-DATE' : now.toString(),
-				'X-Megam-EMAIL' : 'a@man.com',
-				'X-Megam-APIKEY' : 'JLIUt2B1ZEQGF2Z562aPiQ==',
+				'X-Megam-EMAIL' : 'megam@mypaas.io',
+				'X-Megam-APIKEY' : 'IamAtlas{74}NobodyCanSeeME#07',
 				'X-Megam-HMAC' : 'megam@mypaas.io:' + hmac,
 				'Accept' : 'application/vnd.megam+json',
 				'Content-Type' : 'application/json'
@@ -74,6 +79,7 @@ var megam = module.exports = {
 	},	
 		
 	postFlows : function(flows) {	
+		var defer = when.defer();
 		var path = version + "/assemblies/content";
 		var hmac = generateHMAC(flows, path);
 		// An object of options to indicate where to post to
@@ -92,16 +98,11 @@ var megam = module.exports = {
 			form : flows
 		}
 		// Start the request
-		 request(options, function(error, response, body) {
-		//	if (!error && response.statusCode == 200) {
-				// Print out the response body
-				console.log(body)
-				return body
-			//	console.log(response)
-			//	console.log(error)
-		//	}
-		})
-
+		 request(options, function(error, response, body) {			
+				post_result = body;
+				defer.resolve(); 			
+		});
+		return defer.promise;
 	}
 
 }
