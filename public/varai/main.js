@@ -278,7 +278,7 @@ var VARAI = function() {
         setWorkSpace();
         loadSettings();        
         VARAI.comms.connect();
-    });
+    }); 
 
     return {
     };
