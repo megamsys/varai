@@ -20,8 +20,9 @@ var fs = require("fs");
 var app = express();
 var events = require("./events");
 var path = require("path");
-
+var megam = require("./megam");
 var icon_paths = [path.resolve(__dirname + '/../public/icons')];
+
 
 events.on("node-icon-dir",function(dir) {
         icon_paths.push(path.resolve(dir));
@@ -33,14 +34,29 @@ function setupUI(settings) {
     
     // Need to ensure the url ends with a '/' so the static serving works
     // with relative paths
-    app.get("/",function(req,res) {
-    	console.log(req.originalUrl);
-    	console.log(req.originalUrl.slice(-1));
-    	console.log(req.query.email);
+    app.get("/",function(req,res) {    	
         if (req.originalUrl.slice(-1) != "/") {
            res.redirect(req.originalUrl+"/");
         } else {
-            req.next();
+        	if(req.query['email'] && req.query['api_key']) { 
+        	    megam.setEmail(req.query.email);
+        	    megam.setApiKey(req.query.api_key.slice(0,-1));
+        	    megam.auth().then(function() {
+        	    	
+        	    	var data = JSON.parse(megam.getData());
+        	    	console.log(data);
+        	     	if (data.code > 300 ) {
+        	     	    res.redirect("https://www.megam.co");
+        	     	} else {
+        		      req.next();
+        	     	}
+        	   }).otherwise(function(err) {
+        		   console.log(err);
+        		   res.redirect("https://www.megam.co");
+        	     });
+        	 } else {
+        		res.redirect("https://www.megam.co");
+        	} 
         }
     });
     

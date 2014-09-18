@@ -766,6 +766,16 @@ div.node-info {
     padding-left: 5em;
 }
 
+#node-error {
+    width: 700px;
+}
+#node-error * td {
+    padding: 0.8em 0.5em;
+}
+#node-error * tr > td:first-child+td+td {
+    padding-left: 5em;
+}
+
 .help-key {
     border: 1px solid #ddd;
     padding: 4px;
