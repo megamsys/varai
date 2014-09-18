@@ -14,9 +14,10 @@
  ** limitations under the License.
  */
 
+//var randomWords = require('random-words');
  
 VARAI.nodes = function() {
-
+	
     var node_defs = {};
     var nodes = [];
     var configNodes = {};
@@ -24,6 +25,10 @@ VARAI.nodes = function() {
     var defaultWorkspace;
     var workspaces = {};
     var obj = JSON.parse("{}");
+    
+    //function randomword() {
+    //	return randomWords();
+   // }
     
     function registerType(nt,def) {
         node_defs[nt] = def;
@@ -203,10 +208,7 @@ VARAI.nodes = function() {
             node.wires = [];
             for(var i=0;i<n.outputs;i++) {
                 node.wires.push([]);
-            }
-            console.log("----------links----------------");
-            console.log(links);
-            console.log(n._def.category);
+            }           
             var wires = links.filter(function(d){
             	return d.source === n;});
             for (var i in wires) {
@@ -381,14 +383,11 @@ VARAI.nodes = function() {
                 var n = new_nodes[i];
                 for (var w1 in n.wires) {
                     var wires = (n.wires[w1] instanceof Array)?n.wires[w1]:[n.wires[w1]];
-                    console.log("============wires"+wires);
                     for (var w2 in wires) {
                         if (wires[w2] in node_map) {
                             var link = {source:n,sourcePort:w1,target:node_map[wires[w2]]};
                             addLink(link);
-                            console.log("============links"+new_links);
                             new_links.push(link);
-                            console.log("============after links"+new_links);
                         }
                     }
                 }
@@ -410,7 +409,7 @@ VARAI.nodes = function() {
     	var css = [];
     	
     	//group(assembly) array    
-    	    	for(i=1;i<data.length; i++) {
+    for(i=1;i<data.length; i++) {
     	if(data[i].type != "cloudsettings") {
     		groups.push(data[i].app);    
     	  } else {
@@ -422,8 +421,9 @@ VARAI.nodes = function() {
         var duplicateData = data;
         
         //set app id to wired service 
-    	for(k=1;k<data.length;k++) { 
-    	 if ((data[k].wires[0]).length > 0 && data[k].type != "cloudsettings") {
+    	for(k=1;k<data.length;k++) {    		
+    	if(data[k]['source']){    	
+    	 if ((data[k].wires[0]).length > 0 ) {
         	$.each(data[k].wires[0], function (rci1, rc1) {
         		for(i=1;i<duplicateData.length; i++) {  
           		  if(rc1 == duplicateData[i].id) {          			
@@ -433,7 +433,8 @@ VARAI.nodes = function() {
           			}
               	}
        	    });
-          }           
+          }    
+    	 }
     	}
     	
     	//put changes to original data 
@@ -510,9 +511,20 @@ VARAI.nodes = function() {
                   //  component.artifacts.requirements.requirement_type = "create";
                     
                     //related components
-                    component.related_components = "";
-                    if ((data[k].wires[0]).length > 0 ) {
-                    	$.each(data[k].wires[0], function (rci, rc) {
+                    component.related_components = "";                   
+                    var dataWiresArray = [];
+                    var dataWiresLength = 0;
+                    
+                    //differ Apps and services array 
+                    if(data[k]['source']){                     	
+                    	dataWiresLength = data[k].wires[0].length;
+                    	dataWiresArray = data[k].wires[0];                    	
+                    } else {
+                    	dataWiresLength = data[k].wires.length;
+                    	dataWiresArray = data[k].wires;                    	
+                    }
+                    if (dataWiresLength > 0 ) {
+                    	$.each(dataWiresArray, function (rci, rc) {
                     		for(s=1;s<duplicateData.length; s++) {  
                       		  if(rc == duplicateData[s].id) {
                       			component.related_components = duplicateData[s].app+"."+duplicateData[s].domain+"/"+duplicateData[s].name;
@@ -574,6 +586,7 @@ VARAI.nodes = function() {
     	}
 
     return {
+    //	randomword: randomword,
         registerType: registerType,
         getType: getType,
         convertNode: convertNode,

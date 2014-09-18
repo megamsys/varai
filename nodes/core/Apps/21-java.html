@@ -15,10 +15,10 @@ limitations under the License.
 -->
 
 <!--  The Input Node  -->
-<script type="text/x-red" data-template-name="play">
-    <div class="form-row">
+<script type="text/x-red" data-template-name="java">
+     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
+        <input type="text" id="node-input-name"  placeholder="Name">
     </div>    
     <div class="form-row">
         <label for="node-input-app"><i class="icon-tag"></i> Application</label>
@@ -26,52 +26,53 @@ limitations under the License.
     </div>
       <div class="form-row">
         <label for="node-input-domain"><i class="icon-tag"></i> Domain</label>
-        <input type="text" id="node-input-domain" placeholder="Domain Name">
+        <input type="text" id="node-input-domain" placeholder="Domain Name" disabled>
     </div>
     <div class="form-row">
-        <label for="node-input-source"><i class="icon-tag"></i> Source</label>
-        <input type="text" id="node-input-source" placeholder="Source">
+        <label for="node-input-source"><i class="icon-tag"></i> Git</label>
+        <input type="text" id="node-input-source" placeholder="Git">
     </div>
     <div class="form-row">
         <label>&nbsp;</label>
         <input type="checkbox" id="node-input-ha" style="display: inline-block; width: auto; vertical-align: top;">
         <label for="node-input-ha" style="width: 70%;">High Availablity</label>
     </div>
+    <!-- <div class="form-row">
+        <label for="node-input-datatype"><i class="icon-list"></i> Group</label>
+        <select id="node-input-datatype" style="width: 70%;">
+            <option value="group1">group1</option>
+            <option value="group2">group2</option>
+            <option value="group3">group3</option>
+        </select>
+    </div> -->
+       
+   
 </script>
 
-<script type="text/x-red" data-help-name="play">
+<script type="text/x-red" data-help-name="java">
   
 </script>
 
-<script type="text/javascript">
-    VARAI.nodes.registerType('play',{
-        category: 'apps',
+<script type="text/javascript">   
+    VARAI.nodes.registerType('java',{
+        category: 'Apps',
         color:"#FF9999",
         defaults: {
-        	 name: {value:""},
-             app: {value:"", required:true},
-             domain: {value:"",required:true},
-             source: {value:"",required:true},
-             ha: {value:false,required:true}, 
+            name: {value:"", required:true},
+            app: {value:"", required:true},
+            domain: {value:"",required:true},
+            source: {value:"",required:true},
+            ha: {value:false,required:true},          
         },
         label: function() {
-            return this.name||"play";
+            return this.name||"java";
         },
         inputs:1,
         outputs:1,
       //  top:1,
       //  bottom:0,
-        icon: "play.png",
-      //  label: function() {
-      //      if (this.multicast=="false") {
-       //         return this.name||"play "+this.port;
-       //     }
-       //     else return this.name||"play "+(this.group+":"+this.port);
-      //  },
-       // labelStyle: function() {
-       //     return this.name?"node_label_italic":"";
-       // }
-    });
+        icon: "java.png",
+     });
 </script>
 
 

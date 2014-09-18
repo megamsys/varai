@@ -15,7 +15,7 @@ limitations under the License.
 -->
 
 <!--  The Input Node  -->
-<script type="text/x-red" data-template-name="nodejs">
+<script type="text/x-red" data-template-name="play">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -29,49 +29,49 @@ limitations under the License.
         <input type="text" id="node-input-domain" placeholder="Domain Name" disabled>
     </div>
     <div class="form-row">
-        <label for="node-input-source"><i class="icon-tag"></i> Source</label>
-        <input type="text" id="node-input-source" placeholder="Source">
+        <label for="node-input-source"><i class="icon-tag"></i> Git</label>
+        <input type="text" id="node-input-source" placeholder="Git">
     </div>
     <div class="form-row">
         <label>&nbsp;</label>
         <input type="checkbox" id="node-input-ha" style="display: inline-block; width: auto; vertical-align: top;">
         <label for="node-input-ha" style="width: 70%;">High Availablity</label>
     </div>
-    
 </script>
 
-<script type="text/x-red" data-help-name="nodejs">
-   
+<script type="text/x-red" data-help-name="play">
+  
 </script>
 
 <script type="text/javascript">
-    VARAI.nodes.registerType('nodejs',{
-        category: 'apps',
+    VARAI.nodes.registerType('play',{
+        category: 'Apps',
         color:"#FF9999",
         defaults: {
-        	 name: {value:""},
+        	 name: {value:"", required:true},
              app: {value:"", required:true},
              domain: {value:"",required:true},
              source: {value:"",required:true},
              ha: {value:false,required:true}, 
         },
         label: function() {
-            return this.name||"nodejs";
+            return this.name||"play";
         },
         inputs:1,
         outputs:1,
-     //   top:1,
+      //  top:1,
       //  bottom:0,
-        icon: "nodejs.png",
+        icon: "play.png",
       //  label: function() {
       //      if (this.multicast=="false") {
-       //         return this.name||"nodejs "+this.port;
+       //         return this.name||"play "+this.port;
        //     }
-       //     else return this.name||"nodejs "+(this.group+":"+this.port);
+       //     else return this.name||"play "+(this.group+":"+this.port);
       //  },
        // labelStyle: function() {
        //     return this.name?"node_label_italic":"";
        // }
     });
 </script>
+
 

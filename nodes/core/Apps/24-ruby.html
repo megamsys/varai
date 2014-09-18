@@ -29,8 +29,8 @@ limitations under the License.
         <input type="text" id="node-input-domain" placeholder="Domain Name" disabled>
     </div>
     <div class="form-row">
-        <label for="node-input-source"><i class="icon-tag"></i> Source</label>
-        <input type="text" id="node-input-source" placeholder="Source">
+        <label for="node-input-source"><i class="icon-tag"></i> Git</label>
+        <input type="text" id="node-input-source" placeholder="Git">
     </div>
     <div class="form-row">
         <label>&nbsp;</label>
@@ -45,10 +45,10 @@ limitations under the License.
 
 <script type="text/javascript">
     VARAI.nodes.registerType('ruby',{
-        category: 'apps',
+        category: 'Apps',
         color:"#FF9999",
         defaults: {
-        	 name: {value:""},
+        	 name: {value:"", required:true},
              app: {value:"", required:true},
              domain: {value:"",required:true},
              source: {value:"",required:true},

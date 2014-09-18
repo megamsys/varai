@@ -75,7 +75,22 @@ var VARAI = function() {
                     return;
                 }
             }
+            
             var nns = VARAI.nodes.createCompleteNodeSet();
+            var dataLength = nns.length;
+            var totalCS = 0;
+            var totalCSLength = 0;
+            for(i=1;i<dataLength; i++) {
+            	if(nns[i].type == "cloudsettings") {            	
+            		totalCS = totalCS + 1;
+            		totalCSLength = totalCSLength + nns[i].wires[0].length;
+            	  } 
+            	}            
+            
+            if (dataLength-(totalCS+1) != totalCSLength) {
+            	VARAI.notify("<strong>Error</strong>: Apps or Services are not properly configured. Please re-configure the apps or services.","error");
+            	return;
+            } 
             
             $("#btn-icn-deploy").removeClass('icon-upload');
             $("#btn-icn-deploy").addClass('spinner');
@@ -170,6 +185,20 @@ var VARAI = function() {
             loadNodes();
         });
     }
+    
+    function loadDomains() {
+    	$.getJSON("domains",function(domain) {         
+        	try {        		
+        	    var jsonResult = JSON.parse(domain);
+        	    VARAI.editor.updateDomains(domain);
+        	  }
+        	  catch (e) {
+        		  console.log(e);
+        	    VARAI.notify("<strong>Error</strong>: no response from server, Domain is not loaded from server","error");
+        	  };      
+        });   	
+    }
+    
     function loadNodes() {
         $.get('nodes', function(data) {
             $("body").append(data);
@@ -178,14 +207,21 @@ var VARAI = function() {
             $("#palette-search").show();
             //loadFlows();
             loadCloudSettings();
+            loadDomains();
         });
     }
 
     function loadCloudSettings() {
-        $.getJSON("cloudsettings",function(cs) {
-        	console.log(cs);        	
-        	VARAI.editor.update(cs);
-        });
+       $.getJSON("cloudsettings",function(cs) {         
+        	try {
+        	    jsonResult = JSON.parse(cs);
+        	    VARAI.editor.update(cs);
+        	  }
+        	  catch (e) {
+        	    VARAI.notify("<strong>Error</strong>: no response from server, Clouds are not loaded from server","error");
+        	  };      
+        });   	
+    	
     }
     
     function loadFlows() {
@@ -238,8 +274,9 @@ var VARAI = function() {
 
     $(function() {
         VARAI.keyboard.add(/* ? */ 191,{shift:true},function(){showHelp();d3.event.preventDefault();});
+        $("#btn-deploy").addClass("disabled");
         setWorkSpace();
-        loadSettings();
+        loadSettings();        
         VARAI.comms.connect();
     });
 

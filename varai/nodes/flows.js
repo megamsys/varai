@@ -26,10 +26,11 @@ var megam = require("../megam")
 var component_loop = 0;
 var setcomponents = false;
 var storage = null;
-
+var postresult;
 var nodes = {};
 var activeConfig = [];
 var cloud_settings = [];
+var domains = [];
 var missingTypes = [];
 
 events.on('type-registered', function(type) {
@@ -76,6 +77,19 @@ var load_cloud_settings = function() {
 	});
 
 	return cs_defer.promise;
+}
+
+var load_domains = function() {
+	var domain_defer = when.defer();
+	megam.loadFlows("megam.co", "domains").then(function() {
+
+		domains = megam.getData();
+		domain_defer.resolve();
+	}).otherwise(function(err) {
+		util.log("[varai] Error loading domains : " + err);
+	});
+
+	return domain_defer.promise;
 }
 
 var initial_flows_load = function() {
@@ -153,7 +167,6 @@ var loadComponents = function(data) {
 			flow.y = component.inputs.design_inputs.y;
 			flow.z = component.inputs.design_inputs.z;
 			flow.wires = [];
-			console.log("-----------wires  length");
 			console.log(component.inputs.design_inputs.wires.length);
 			flow.wires.push(component.inputs.design_inputs.wires);
 			activeConfig.push(flow);
@@ -161,7 +174,6 @@ var loadComponents = function(data) {
 			console.log(component_links.length);
 			console.log(component_links.length - 1);
 			if (i == component_links.length - 1) {
-				console.log("---------defer entry----------");
 				component_defer.resolve();
 			}
 		}).otherwise(function(err) {
@@ -294,26 +306,35 @@ var flowNodes = module.exports = {
 	},
 
 	getFlows : function() {
-		console.log("--------------------get flows------------------------");
-		console.log(activeConfig);
 		return activeConfig;
 	},
 	getCloudSettings : function() {
-		console
-				.log("----------------get cloud settings----------------------------");
-		console.log(cloud_settings);
 		return cloud_settings;
 	},
-	setFlows : function(conf) {
-		return parseCredentials(conf).then(function(confCredsRemoved) {
-
-			/*
-			 * return storage.saveFlows(confCredsRemoved).then(function () {
-			 * return stopFlows().then(function () { activeConfig =
-			 * confCredsRemoved; parseConfig(); }); })
-			 */
-			return megam.postFlows(JSON.stringify(confCredsRemoved))
-		})
+	postFlows : function(conf) {
+		var postdefer = when.defer();		
+		parseCredentials(conf).then(function(confCredsRemoved) {
+		   megam.postFlows(JSON.stringify(confCredsRemoved)).then(function() {
+			   postresult = megam.getPostData(); 
+			   postdefer.resolve();
+		   });		   
+		});
+		return postdefer.promise;
+	},
+	getPostResult : function() {
+		return postresult;
+	},
+	loadDomains : function() {
+		var dd_defer = when.defer();
+		load_domains().then(function() {
+			dd_defer.resolve();
+		}).otherwise(function(err) {
+			util.log("[varai] Error loading domains : " + err);
+		});
+		return dd_defer.promise;
+	},
+	getDomains : function() {
+		return domains;
 	},
 	stopFlows : stopFlows
 };

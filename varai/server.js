@@ -45,16 +45,23 @@ function createServer(_server,_settings) {
     		var cloudsettings = varaiNodes.getCloudSettings();        
         	res.json(cloudsettings);
 		}).otherwise(function(err) {
-			util.log("[varai] Error loading flows : " + err);
+			util.log("[varai] Error loading cloud settings : " + err);
+		});        	
+    });    
+    
+    app.get("/domains", function(req, res) {
+    	varaiNodes.loadDomains().then(function() {	
+    		var domains = varaiNodes.getDomains();        
+        	res.json(domains);
+		}).otherwise(function(err) {
+			util.log("[varai] Error loading Domains : " + err);
 		});        	
     });    
     
     app.get("/flows",function(req,res) {    	
     	var cloudsettings = {};    	  
     	varaiNodes.loadFlows().then(function() {	
-    		var flows = varaiNodes.getFlows();
-        	console.log("+++++++++++++++++++++++++++++++++++get flows++++++++++++++++++++++++++++++++++++++++++++++++");
-        	console.log(flows);
+    		var flows = varaiNodes.getFlows();        	
         	res.json(flows);
 		}).otherwise(function(err) {
 			util.log("[varai] Error loading flows : " + err);
@@ -65,8 +72,20 @@ function createServer(_server,_settings) {
         express.json(),
         function(req,res) {
             var flows = req.body;    
-            varaiNodes.setFlows(flows).then(function() {
-            	res.json(204);
+            varaiNodes.postFlows(flows).then(function() {
+            	var resp = varaiNodes.getPostResult();
+            	try {
+            	    jsonResult = JSON.parse(resp);
+            	    if (jsonResult.code > 205) {
+            	    	res.send(500, jsonResult.more);
+            	    } else {
+            	        res.json(204); 
+            	    }
+            	  }
+            	  catch (e) {
+            		  res.send(500, "");
+            	  };   
+            	
             }).otherwise(function(err) {
                 util.log("[varai] Error saving flows : "+err);
                 res.send(500,err.message);

@@ -16,6 +16,7 @@
 VARAI.editor = function() {
     var editing_node = null;
     var cloudsettings = {};
+    var domains = {};
     // TODO: should IMPORT/EXPORT get their own dialogs?
 
     function getCredentialsURL(nodeType, nodeID) {
@@ -447,15 +448,27 @@ VARAI.editor = function() {
     	cloudsettings = cs;
     }
     
+    function updateDomains(domain) {
+    	domains = domain;
+    }
+    
     function parseCloudSettings(cs) {
     	var cs_response = JSON.parse(cs);
     	return cs_response.results;
     }
     
+    function parseDomains(domain) {
+    	var domain_response = JSON.parse(domain);
+    	return domain_response.results;
+    }
+    
     function showEditDialog(node) {
         editing_node = node;
-        VARAI.view.state(VARAI.state.EDITING);      
+        VARAI.view.state(VARAI.state.EDITING);           
         $("#dialog-form").html($("script[data-template-name='"+node.type+"']").html());
+        
+        prepareEditDialog(node,node._def,"node-input");
+        $( "#dialog" ).dialog("option","title","Edit "+node.type+" node").dialog( "open" );
         if (node.type == "cloudsettings") {
         	var css = parseCloudSettings(cloudsettings);
         	$.each(css, function (i, item) {
@@ -465,15 +478,18 @@ VARAI.editor = function() {
         	        text : item.name 
         	    }));
         	});
+        } else {
+           $("#node-input-name").val(chance.first()+chance.last());
+           $("#node-input-app").val(chance.first()+chance.last()); 
+           var dd = parseDomains(domains);
+           $("#node-input-domain").val(dd[0].name);
         }
-        prepareEditDialog(node,node._def,"node-input");
-        $( "#dialog" ).dialog("option","title","Edit "+node.type+" node").dialog( "open" );
     }
 
     function showEditConfigNodeDialog(name,type,id) {
         var adding = (id == "_ADD_");
         var node_def = VARAI.nodes.getType(type);
-
+ 
         var configNode = VARAI.nodes.node(id);
         if (configNode == null) {
             configNode = {
@@ -655,6 +671,7 @@ VARAI.editor = function() {
         edit: showEditDialog,
         editConfig: showEditConfigNodeDialog,
         update: updateCloudSettings,
+        updateDomains: updateDomains,
         validateNode: validateNode,
         updateNodeProperties: updateNodeProperties // TODO: only exposed for edit-undo
     }

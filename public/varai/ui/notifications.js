@@ -43,13 +43,13 @@ VARAI.notify = function() {
             var nn = n;
             return function() {
                 currentNotifications.splice(currentNotifications.indexOf(nn),1);
-                $(nn).slideUp(300, function() {
+                $(nn).slideUp(600, function() {
                         nn.parentNode.removeChild(nn);
                 });
             };
         }();
         if (!fixed) {
-            n.timeoutid = window.setTimeout(n.close,timeout||3000);
+            n.timeoutid = window.setTimeout(n.close,timeout||6000);
         }
         currentNotifications.push(n);
         c+=1;
