@@ -28,9 +28,46 @@ var version = "/v2";
 var result = {};
 var post_result = {};
 var host = 'https://api.megam.co';
+var email = "";
+var api_key = "";
 
 var megam = module.exports = {
 
+   setEmail : function(req_email) {
+			email = req_email;
+    },	
+		
+    setApiKey : function(req_apikey) {
+		api_key = req_apikey;
+    },	
+    
+	auth : function() {
+		var defer = when.defer();	
+		var path = version + "/auth";
+		var data = "{\"email\":\"" + email + "\", \"api_key\":\""+ api_key + "\", \"authority\":\"user\" }";
+		var hmac = generateHMAC(data, path, api_key);
+		var options = {
+				url : host + path,
+				method : 'POST',
+				headers : {
+					'X-Megam-DATE' : now.toString(),
+					'X-Megam-EMAIL' : email,
+					'X-Megam-APIKEY' : api_key,
+					'X-Megam-HMAC' : email +":"+ hmac,
+					'Accept' : 'application_vnd_megam_json',
+					'Content-Type' : 'application/json'
+				},				
+				form : data
+			}
+			// Start the request
+			 request(options, function(error, response, body) {				
+				 result = body;
+				 defer.resolve();  				
+			});
+			return defer.promise;
+			
+	},	
+		
 	getData : function() {
 		return result;
 	},
@@ -46,7 +83,7 @@ var megam = module.exports = {
 		 } else {
 			 var path = version + "/" + url;
 		 }
-		var hmac = generateHMAC("", path);
+		var hmac = generateHMAC("", path, api_key);
 		// An object of options to indicate where to post to
 		// Configure the request		
 		
@@ -55,24 +92,18 @@ var megam = module.exports = {
 			method : 'GET',
 			headers : {
 				'X-Megam-DATE' : now.toString(),
-				'X-Megam-EMAIL' : 'megam@mypaas.io',
-				'X-Megam-APIKEY' : 'IamAtlas{74}NobodyCanSeeME#07',
-				'X-Megam-HMAC' : 'megam@mypaas.io:' + hmac,
+				'X-Megam-EMAIL' : email,
+				'X-Megam-APIKEY' : api_key,
+				'X-Megam-HMAC' : email +":"+ hmac,
 				'Accept' : 'application/vnd.megam+json',
 				'Content-Type' : 'application/json'
 			},
 			form : ""
 		}
 		// Start the request
-		 request(options, function(error, response, body) {
-		//	if (!error && response.statusCode == 200) {
-				// Print out the response body			
+		 request(options, function(error, response, body) {		
 			 result = body;
-			 defer.resolve();  
-			
-			//	console.log(response)
-			//	console.log(error)
-		//	}
+			 defer.resolve();  		
 		});
 		return defer.promise;
 		
@@ -81,7 +112,7 @@ var megam = module.exports = {
 	postFlows : function(flows) {	
 		var defer = when.defer();
 		var path = version + "/assemblies/content";
-		var hmac = generateHMAC(flows, path);
+		var hmac = generateHMAC(flows, path, api_key);
 		// An object of options to indicate where to post to
 		// Configure the request
 		var options = {
@@ -89,9 +120,9 @@ var megam = module.exports = {
 			method : 'POST',
 			headers : {
 				'X-Megam-DATE' : now.toString(),
-				'X-Megam-EMAIL' : 'megam@mypaas.io',
-				'X-Megam-APIKEY' : 'IamAtlas{74}NobodyCanSeeME#07',
-				'X-Megam-HMAC' : 'megam@mypaas.io:' + hmac,
+				'X-Megam-EMAIL' : email,
+				'X-Megam-APIKEY' : api_key,
+				'X-Megam-HMAC' : email +":"+ hmac,
 				'Accept' : 'application/vnd.megam+json',
 				'Content-Type' : 'application/json'
 			},
@@ -109,17 +140,20 @@ var megam = module.exports = {
 
 function createSign(data, path) {
 	var mkSign = now.toString() + "\n" + path + "\n" + calculateMD5(data)
+	console.log(mkSign);
 	return mkSign
 }
 
 function calculateMD5(data) {
 	md5 = crypto.createHash("md5", "MD5").update(data).digest(encoding = 'base64');
+	console.log(md5);
 	return md5
 }
 
-function generateHMAC(flows, path) {
+function generateHMAC(flows, path, apikey) {
 	var algorithm = 'sha1';
 	var hash, hmac;
-	hmac = crypto.createHmac(algorithm, 'IamAtlas{74}NobodyCanSeeME#07').update(createSign(flows, path)).digest("hex");
+	hmac = crypto.createHmac(algorithm, apikey).update(createSign(flows, path)).digest("hex");
+	console.log(hmac);
 	return hmac
 }
