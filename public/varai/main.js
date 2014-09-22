@@ -230,18 +230,7 @@ var VARAI = function() {
         	
             VARAI.nodes.import(nodes);
             VARAI.view.dirty(false);
-            VARAI.view.redraw();
-            VARAI.comms.subscribe("status/#",function(topic,msg) {
-                var parts = topic.split("/");
-                var node = VARAI.nodes.node(parts[1]);
-                if (node) {
-                    node.status = msg;
-                    if (statusEnabled) {
-                        node.dirty = true;
-                        VARAI.view.redraw();
-                    }
-                }
-            });
+            VARAI.view.redraw();           
         });
     }
 
@@ -277,7 +266,6 @@ var VARAI = function() {
         $("#btn-deploy").addClass("disabled");
         setWorkSpace();
         loadSettings();        
-        VARAI.comms.connect();
     }); 
 
     return {

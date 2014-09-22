@@ -20,7 +20,6 @@ var when = require('when');
 
 var createUI = require("./ui");
 var varaiNodes = require("./nodes");
-var comms = require("./comms");
 
 var app = null;
 var nodeApp = null;
@@ -31,7 +30,6 @@ var storage = null;
 function createServer(_server,_settings) {
     server = _server;
     settings = _settings;
-    comms.init(_server,_settings);
     storage = require("./actions");
     app = createUI(settings);
     nodeApp = express();
@@ -125,7 +123,6 @@ function start() {
             
          //   varaiNodes.loadFlows();
         });
-        comms.start();
     });
     
     return defer.promise;

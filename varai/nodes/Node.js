@@ -21,7 +21,6 @@ var when = require("when");
 
 var flows = require("./flows");
 var credentials = require('./credentials')
-var comms = require("../comms");
 
 function Node(n) {
     this.id = n.id;
@@ -139,10 +138,4 @@ Node.prototype.error = function(msg) {
     log_helper(this, 'error', msg);
 }
 
-/**
- * status: { fill:"red|green", shape:"dot|ring", text:"blah" }
- */
-Node.prototype.status = function(status) {
-    comms.publish("status/"+this.id,status,true);
-}
 module.exports = Node;
