@@ -43,13 +43,14 @@ function setupUI(settings) {
         	    megam.setApiKey(req.query.api_key);
         	    megam.auth().then(function() {        	    	
         	    	var data = JSON.parse(megam.getData());
-        	     	if (data.code > 300 ) {  
+        	     	if (data.code > 300 ) { 
+        	     		console.log(data);
         	     		res.redirect(req.query.callbackURL);
         	     	} else {
         		      req.next();
         	     	}
         	   }).otherwise(function(err) {
-        		   res.redirect(req.query.callbackURL);
+        		   res.status(500).redirect(req.query.callbackURL);
         	     });
         	 } else {    
         		 res.redirect(settings.callbackURL);

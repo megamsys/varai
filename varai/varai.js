@@ -18,7 +18,6 @@ var events = require("./events");
 var server = require("./server");
 var nodes = require("./nodes");
 var library = require("./library");
-var comms = require("./comms");
 var log = require("./log");
 var fs = require("fs");
 var settings = null;
@@ -54,7 +53,6 @@ var VARAI = {
     credentials: credentials,
     events: events,
     log: log,
-    comms:comms
 };
 
 VARAI.__defineGetter__("app", function() { console.log("Deprecated use of VARAI.app - use VARAI.httpAdmin instead"); return server.app });
