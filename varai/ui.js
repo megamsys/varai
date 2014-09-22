@@ -34,28 +34,25 @@ function setupUI(settings) {
     
     // Need to ensure the url ends with a '/' so the static serving works
     // with relative paths
-    app.get("/",function(req,res) {    	
-        if (req.originalUrl.slice(-1) != "/") {
+    app.get("/",function(req,res) {
+    	if (req.originalUrl.slice(-1) != "/") {
            res.redirect(req.originalUrl+"/");
         } else {
         	if(req.query['email'] && req.query['api_key']) { 
         	    megam.setEmail(req.query.email);
-        	    megam.setApiKey(req.query.api_key.slice(0,-1));
-        	    megam.auth().then(function() {
-        	    	
+        	    megam.setApiKey(req.query.api_key);
+        	    megam.auth().then(function() {        	    	
         	    	var data = JSON.parse(megam.getData());
-        	    	console.log(data);
-        	     	if (data.code > 300 ) {
-        	     	    res.redirect("https://www.megam.co");
+        	     	if (data.code > 300 ) {  
+        	     		res.redirect(req.query.callbackURL);
         	     	} else {
         		      req.next();
         	     	}
         	   }).otherwise(function(err) {
-        		   console.log(err);
-        		   res.redirect("https://www.megam.co");
+        		   res.redirect(req.query.callbackURL);
         	     });
-        	 } else {
-        		res.redirect("https://www.megam.co");
+        	 } else {    
+        		 res.redirect(settings.callbackURL);
         	} 
         }
     });
@@ -88,7 +85,6 @@ function setupUI(settings) {
         res.json(safeSettings);
     });   
    
-    
     app.use("/",express.static(__dirname + '/../public'));
     
     return app;

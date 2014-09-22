@@ -38,6 +38,8 @@ module.exports = {
     // Maximum number of lines in debug window before pruning
     debugMaxLength: 1000,
 
+    callbackURL: "https://www.megam.co",
+    
     // The file containing the flows. If not set, it defaults to flows_<hostname>.json
     //flowFile: 'flows.json',
 
