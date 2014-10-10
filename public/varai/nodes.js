@@ -405,7 +405,7 @@ VARAI.nodes = function() {
     function assemblyJson(data) {
     	var groups = [];
     	var assemblies_array = [];
-    	var ha_policy_flag = false;
+    	var ha_policy_flag = false;    	
     	var css = [];
     	
     	//group(assembly) array    
@@ -441,9 +441,9 @@ VARAI.nodes = function() {
     	data = duplicateData;
     	duplicateData = data
     	groups = eliminateDuplicates(groups);
-    	
     	//create assembly json
     	for(j=0;j<groups.length; j++) {
+    	    var bind_policy_flag = false;
     		ha_policy_flag = false;
     		assembly = JSON.parse("{}");
     		assembly.name = groups[j];
@@ -456,13 +456,14 @@ VARAI.nodes = function() {
         		  }
     			}
         	}
-    		if(ha_policy_flag == true) {
-    		    assembly.policies = JSON.parse("{}");
-    		    assembly.policies.ha_policy = JSON.parse("{}");
-                assembly.policies.ha_policy.name = "HA policy";
-                assembly.policies.ha_policy.type = "colocated"; 
-                assembly.policies.ha_policy.members = [];
-    		}
+        	// assembly.policies = JSON.parse("{}");
+        	assembly.policies = [];
+    		// if(ha_policy_flag == true) {    		    
+    		//    assembly.policies.ha_policy = JSON.parse("{}");
+           //     assembly.policies.ha_policy.name = "HA policy";
+           //     assembly.policies.ha_policy.type = "colocated"; 
+           //     assembly.policies.ha_policy.members = [];
+    		// }
             
     		//create components json for assembly
     		for(k=1;k<data.length;k++) {    			
@@ -523,21 +524,45 @@ VARAI.nodes = function() {
                     	dataWiresLength = data[k].wires.length;
                     	dataWiresArray = data[k].wires;                    	
                     }
+                    
+                    if(dataWiresLength > 0) {
+                       if (assembly.policies.length > 0 ) {
+                      	   for(bi=0;bi<assembly.policies.length; bi++) {
+                      	       if (assembly.policies[bi].name == "bind policy") {
+                      		             bind_policy_flag = true
+                      			       } 
+                      			    } 
+                      			 } 
+                    	 if (!bind_policy_flag) {
+                      		   bind_policy = JSON.parse("{}");
+                               bind_policy.name = "bind policy";
+                               bind_policy.ptype = "colocated"; 
+                               bind_policy.members = [];
+                               bind_policy.members.push(data[k].id)
+                               assembly.policies.push(bind_policy)
+                      	} else {
+                      			for(bi=0;bi<assembly.policies.length; bi++) {
+                      			     if (assembly.policies[bi].name == "bind policy") {
+                      			         assembly.policies[bi].members.push(data[k].id)
+                      			   } 
+                             }
+                          }   
+                     }
                     if (dataWiresLength > 0 ) {
                     	$.each(dataWiresArray, function (rci, rc) {
                     		for(s=1;s<duplicateData.length; s++) {  
                       		  if(rc == duplicateData[s].id) {
                       			component.related_components = duplicateData[s].app+"."+duplicateData[s].domain+"/"+duplicateData[s].name;
-                      			}
-                          	}
-       	        	    });
-                    }                     
+                      			}                       			              
+                      		   }                     			
+       	           });
+                }                     
                     component.operations = JSON.parse("{}");
                     component.operations.operation_type = "";
                     component.operations.target_resource = "";
                     assembly.components.push(component);
-                    assembly.policies = "";
-                 //   if(data[k].ha == true) {
+                 //   assembly.policies = "";
+                   // if(data[k].ha == true) {
                   //  	assembly.policies.ha_policy.members.push(data[k].name);
                   //  }
     			}
