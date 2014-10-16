@@ -507,7 +507,7 @@ VARAI.nodes = function() {
                     component.artifacts =JSON.parse("{}");
                     component.artifacts.artifact_type = "tosca type";
                     component.artifacts.content = "";
-                    component.artifacts.requirements = "";
+                    component.artifacts.artifact_requirements = "";
                   //  component.artifacts.requirements = JSON.parse("{}");
                   //  component.artifacts.requirements.requirement_type = "create";
                     
