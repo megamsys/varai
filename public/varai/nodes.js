@@ -503,10 +503,10 @@ VARAI.nodes = function() {
 			for ( k = 1; k < data.length; k++) {
 				if (groups[j] == data[k].app) {
 					var component = JSON.parse("{}");
-					component.name = data[k].name
-					component.tosca_type = "tosca.web." + data[k].type
+					component.name = data[k].name;
+					component.tosca_type = "tosca.web." + data[k].type;
 					component.requirements = JSON.parse("{}");
-					component.requirements.host = ""
+					component.requirements.host = "";
 
 					// put wired cloudsetting name to component host
 					$.each(css, function(csi, csitem) {
@@ -517,24 +517,24 @@ VARAI.nodes = function() {
 						});
 					});
 
-					component.requirements.dummy = ""
+					component.requirements.dummy = "";
 					component.inputs = JSON.parse("{}");
-					component.inputs.domain = data[k].domain || ""
-					component.inputs.port = data[k].port || ""
-					component.inputs.username = data[k].username || ""
-					component.inputs.password = data[k].password || ""
-					component.inputs.version = data[k].version || ""
-					component.inputs.source = data[k].source || ""
+					component.inputs.domain = data[k].domain || "";
+					component.inputs.port = data[k].port || "";
+					component.inputs.username = data[k].username || "";
+					component.inputs.password = data[k].password || "";
+					component.inputs.version = data[k].version || "";
+					component.inputs.source = data[k].source || "";
 					component.inputs.design_inputs = JSON.parse("{}");
-					component.inputs.design_inputs.id = data[k].id
-					component.inputs.design_inputs.x = data[k].x
-					component.inputs.design_inputs.y = data[k].y
-					component.inputs.design_inputs.z = data[k].z
+					component.inputs.design_inputs.id = data[k].id;
+					component.inputs.design_inputs.x = data[k].x;
+					component.inputs.design_inputs.y = data[k].y;
+					component.inputs.design_inputs.z = data[k].z;
 					var wires = [];
-					component.inputs.design_inputs.wires = data[k].wires[0] || wires
+					component.inputs.design_inputs.wires = data[k].wires[0] || wires;
 					component.inputs.service_inputs = JSON.parse("{}");
-					component.inputs.service_inputs.dbname = data[k].dbname || ""
-					component.inputs.service_inputs.dbpassword = data[k].dbpassword || ""
+					component.inputs.service_inputs.dbname = data[k].dbname || "";
+					component.inputs.service_inputs.dbpassword = data[k].dbpassword || "";
 					//  component.external_management_resource = JSON.parse("{}");
 					//  component.external_management_resource.url = "";
 					component.external_management_resource = "";
@@ -563,7 +563,7 @@ VARAI.nodes = function() {
 						if (assembly.policies.length > 0) {
 							for ( bi = 0; bi < assembly.policies.length; bi++) {
 								if (assembly.policies[bi].name == "bind policy") {
-									bind_policy_flag = true
+									bind_policy_flag = true;
 								}
 							}
 						}
@@ -572,12 +572,12 @@ VARAI.nodes = function() {
 							bind_policy.name = "bind policy";
 							bind_policy.ptype = "colocated";
 							bind_policy.members = [];
-							bind_policy.members.push(data[k].id)
-							assembly.policies.push(bind_policy)
+							bind_policy.members.push(data[k].id);
+							assembly.policies.push(bind_policy);
 						} else {
 							for ( bi = 0; bi < assembly.policies.length; bi++) {
 								if (assembly.policies[bi].name == "bind policy") {
-									assembly.policies[bi].members.push(data[k].id)
+									assembly.policies[bi].members.push(data[k].id);
 								}
 							}
 						}

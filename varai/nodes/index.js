@@ -43,7 +43,7 @@ function init(_settings,storage) {
     credentials.init(storage);
     flows.init(storage);
     registry.init(_settings);
-}
+};
 //var randomWords = require('random-words');
 //console.log(randomWords());
 //function rwords() {
@@ -74,5 +74,5 @@ module.exports = {
     addCredentials: credentials.add,
     getCredentials: credentials.get,
     deleteCredentials: credentials.delete
-}
+};
 

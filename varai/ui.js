@@ -21,6 +21,7 @@ var app = express();
 var events = require("./events");
 var path = require("path");
 var megam = require("./megam");
+var typeRegistry = require("./nodes/registry");
 var icon_paths = [path.resolve(__dirname + '/../public/icons')];
 
 
@@ -47,6 +48,14 @@ function setupUI(settings) {
         	     		console.log(data);
         	     		res.redirect(req.query.callbackURL);
         	     	} else {
+        	     	console.log(req.query);
+                    if(!req.query.assembliesID) {
+                       typeRegistry.setID("");
+                    } else {
+                    console.log("++++++++++++++++++++++++++++++++++");
+                    console.log(req.query.assembliesID.slice(0,-1));
+        	     	  typeRegistry.setID(req.query.assembliesID.slice(0,-1));
+        	     	  }
         		      req.next();
         	     	}
         	   }).otherwise(function(err) {
