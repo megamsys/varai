@@ -58,7 +58,7 @@ var megam = module.exports = {
 					'Content-Type' : 'application/json'
 				},				
 				form : data
-			}
+			};
 			// Start the request
 			 request(options, function(error, response, body) {				
 				 result = body;
@@ -99,7 +99,7 @@ var megam = module.exports = {
 				'Content-Type' : 'application/json'
 			},
 			form : ""
-		}
+		};
 		// Start the request
 		 request(options, function(error, response, body) {		
 			 result = body;
@@ -127,7 +127,7 @@ var megam = module.exports = {
 				'Content-Type' : 'application/json'
 			},
 			form : flows
-		}
+		};
 		// Start the request
 		 request(options, function(error, response, body) {			
 				post_result = body;
@@ -136,18 +136,18 @@ var megam = module.exports = {
 		return defer.promise;
 	}
 
-}
+};
 
 function createSign(data, path) {
-	var mkSign = now.toString() + "\n" + path + "\n" + calculateMD5(data)
+	var mkSign = now.toString() + "\n" + path + "\n" + calculateMD5(data);
 	console.log(mkSign);
-	return mkSign
+	return mkSign;
 }
 
 function calculateMD5(data) {
 	md5 = crypto.createHash("md5", "MD5").update(data).digest(encoding = 'base64');
 	console.log(md5);
-	return md5
+	return md5;
 }
 
 function generateHMAC(flows, path, apikey) {
@@ -155,5 +155,5 @@ function generateHMAC(flows, path, apikey) {
 	var hash, hmac;
 	hmac = crypto.createHmac(algorithm, apikey).update(createSign(flows, path)).digest("hex");
 	console.log(hmac);
-	return hmac
+	return hmac;
 }

@@ -46,17 +46,17 @@ Node.prototype.on = function(event,callback) {
                         resolve();
                     });
                 });
-            }
+            };
         } else {
             this.close = callback;
         }
     } else {
         this._on(event,callback);
     }
-}
+};
 
 Node.prototype.close = function() {
-}
+};
 
 Node.prototype.send = function(msg) {
     // instanceof doesn't work for some reason here
@@ -112,11 +112,11 @@ Node.prototype.send = function(msg) {
             }
         }
     }
-}
+};
 
 Node.prototype.receive = function(msg) {
     this.emit("input",msg);
-}
+};
 
 function log_helper(self, level, msg) {
     var o = {level:level, id:self.id, type:self.type, msg:msg};
@@ -128,14 +128,13 @@ function log_helper(self, level, msg) {
 
 Node.prototype.log = function(msg) {
     log_helper(this, 'log', msg);
-}
+};
 
 Node.prototype.warn = function(msg) {
     log_helper(this, 'warn', msg);
-}
+};
 
 Node.prototype.error = function(msg) {
     log_helper(this, 'error', msg);
-}
-
+};
 module.exports = Node;

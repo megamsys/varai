@@ -30,6 +30,7 @@ var settings;
 var node_types = {};
 var node_configs = [];
 var node_scripts = [];
+var assemblyID = "";
 
 function loadTemplate(templateFilename) {
     return when.promise(function(resolve,reject) {
@@ -286,6 +287,12 @@ var typeRegistry = module.exports = {
     get: function(type) {
         return node_types[type];
     },
+    setID: function(id) {
+        assemblyID = id;
+    },
+    getID: function() {
+        return assemblyID;
+    },
     getNodeConfigs: function() {
         var result = "";
         for (var i=0;i<node_configs.length;i++) {
@@ -300,6 +307,6 @@ var typeRegistry = module.exports = {
         result += '</script>';
         return result;
     }
-}
+};
 
 

@@ -144,4 +144,4 @@ module.exports = {
     save: function () {
         return storage.saveCredentials(credentials);
     }
-}
+};

@@ -167,14 +167,14 @@ var VARAI = function() {
     var workspaceIndex = 0;
     
     function setWorkSpace() {
-    	/* var tabId = VARAI.nodes.id();
+    	 var tabId = VARAI.nodes.id();
          do {
              workspaceIndex += 1;
          } while($("#workspace-tabs a[title='Sheet "+workspaceIndex+"']").size() != 0);
 
          var ws = {type:"tab",id:tabId,label:"Sheet "+workspaceIndex};
-    	VARAI.view.addWorkspace(ws);*/
-    	VARAI.view.loadWorkspace();
+    	VARAI.view.addWorkspace(ws);
+    	//VARAI.view.loadWorkspace();
     }
     
      //add route for /:id
@@ -265,7 +265,9 @@ var VARAI = function() {
         VARAI.keyboard.add(/* ? */ 191,{shift:true},function(){showHelp();d3.event.preventDefault();});
         $("#btn-deploy").addClass("disabled");
         setWorkSpace();
-        loadSettings();        
+        loadFlows(); 
+        loadSettings();
+        console.log("-----------------------------------entry");       
     }); 
 
     return {
