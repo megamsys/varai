@@ -84,14 +84,15 @@ var VARAI = function() {
             var dataLength = nns.length;
             var totalCS = 0;
             var totalCSLength = 0;
-            for(i=1;i<dataLength; i++) {
+            
+            for(i=0;i<dataLength; i++) {
             	if(nns[i].type == "cloudsettings") {            	
             		totalCS = totalCS + 1;
             		totalCSLength = totalCSLength + nns[i].wires[0].length;
             	  } 
             	}            
             
-            if (dataLength-(totalCS+1) != totalCSLength) {
+            if ((dataLength-totalCS) != totalCSLength) {
             	VARAI.notify("<strong>Error</strong>: Apps or Services are not properly configured. Please re-configure the apps or services.","error");
             	return;
             } 
@@ -103,7 +104,7 @@ var VARAI = function() {
             //assemblies JSON creation 
             console.log(JSON.stringify(nns));
             var json = VARAI.nodes.assemblyJson(nns);
-            
+            console.log(JSON.stringify(json));
                        
            $.ajax({
                 url:"flows",

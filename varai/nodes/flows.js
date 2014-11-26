@@ -116,6 +116,7 @@ var load_domains = function() {
 var initial_flows_load = function() {
 	var initial_defer = when.defer();
 	var complinks;
+	var totlinks = 1;
 	activeConfig = [];
 	var id = typeRegistry.getID();
 	if (id.length > 1) {
@@ -127,10 +128,10 @@ var initial_flows_load = function() {
 			var assemblies = response.results[0];
 			var sheet = {};
 
-			sheet.type = assemblies.inputs.assemblies_type;
-			sheet.id = assemblies.inputs.id;
-			sheet.label = assemblies.inputs.label;
-			//activeConfig.push(sheet);
+			sheet.type = "tab";
+			sheet.id = "";
+			//sheet.label = assemblies.inputs.label;
+			sheet.label = "Sheet 1";
 			activeConfig[0] = sheet;
 
 			for ( j = 0; j < assemblies.inputs.cloudsettings.length; j++) {
@@ -146,9 +147,9 @@ var initial_flows_load = function() {
 				console.log(assemblies.inputs.cloudsettings[j].wires[1]);
 				cloud_settings.wires[0] = assemblies.inputs.cloudsettings[j].wires;
 				//activeConfig.push(cloud_settings);
+				totlinks = totlinks + 1;
 				activeConfig[activeConfig.length] = cloud_settings;
 			}
-
 			var assembly_links = assemblies.assemblies;
 			for ( i = 0; i < assembly_links.length - 1; i++) {
 				if (assembly_links[i].length > 1) {
@@ -160,6 +161,7 @@ var initial_flows_load = function() {
 						var component_links = assembly.components;
 						complinks = component_links.length;
 						for ( i = 0; i < component_links.length - 1; i++) {
+						    totlinks = totlinks + 1;
 							megam.loadFlows(component_links[i], "components").then(function() {
 								var cData = megam.getData();
 								var component_response = JSON.parse(cData);
@@ -179,8 +181,8 @@ var initial_flows_load = function() {
 								flow.wires = [];
 								flow.wires[0] = component.inputs.design_inputs.wires;
 								//activeConfig.push(flow);
-								activeConfig[activeConfig.length] = flow;
-								if (activeConfig.length == complinks + 2) {
+								activeConfig[activeConfig.length] = flow;							
+								if (activeConfig.length == totlinks) {
 									initial_defer.resolve();
 								}
 							}).otherwise(function(err) {
@@ -198,6 +200,7 @@ var initial_flows_load = function() {
 			util.log("[varai] Error loading flows : " + err);
 		});
 	}
+	
 	return initial_defer.promise;
 };
 
