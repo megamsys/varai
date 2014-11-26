@@ -59,7 +59,7 @@ VARAI.nodes = function() {
 			for (var d in n._def.defaults) {
 				var property = n._def.defaults[d];
 				if (property.type) {
-					var type = getType(property.type)
+					var type = getType(property.type);
 					if (type && type.category == "config") {
 						var configNode = configNodes[n[d]];
 						if (configNode) {
@@ -116,7 +116,7 @@ VARAI.nodes = function() {
 			for (var d in node._def.defaults) {
 				var property = node._def.defaults[d];
 				if (property.type) {
-					var type = getType(property.type)
+					var type = getType(property.type);
 					if (type && type.category == "config") {
 						var configNode = configNodes[node[d]];
 						if (configNode) {
@@ -397,8 +397,8 @@ VARAI.nodes = function() {
 								label : "unknown: " + n.type,
 								labelStyle : "node_label_italic",
 								outputs : n.outputs || n.wires.length
-							}
-						}
+							};
+						};
 						node.outputs = n.outputs || node._def.outputs;
 
 						for (var d in node._def.defaults) {
@@ -444,9 +444,10 @@ VARAI.nodes = function() {
 		var assemblies_array = [];
 		var ha_policy_flag = false;
 		var css = [];
-
+        console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        console.log(data);
 		//group(assembly) array
-		for ( i = 1; i < data.length; i++) {
+		for ( i = 0; i < data.length; i++) {
 			if (data[i].type != "cloudsettings") {
 				groups.push(data[i].app);
 			} else {
@@ -477,7 +478,7 @@ VARAI.nodes = function() {
         
 		//put changes to original data
 		data = duplicateData;
-		duplicateData = data
+		duplicateData = data;
 		groups = eliminateDuplicates(groups);
 		//create assembly json
 		for ( j = 0; j < groups.length; j++) {
@@ -610,25 +611,24 @@ VARAI.nodes = function() {
 
 			assemblies_array.push(assembly);
 		}
-		obj.name = data[0].label;
+		obj.name = data[0].label || "";
 		obj.assemblies = assemblies_array;
 		obj.inputs = JSON.parse("{}");
 		obj.inputs.id = data[0].id;
 		obj.inputs.assemblies_type = data[0].type;
-		obj.inputs.label = data[0].label;
+		obj.inputs.label = data[0].label || "";
 		obj.inputs.cloudsettings = [];
 		$.each(css, function(p, item) {
 			var cloud_settings = JSON.parse("{}");
 			cloud_settings.id = item.id;
 			cloud_settings.cstype = item.type;
-			cloud_settings.cloudsettings = item.cloudsettings
+			cloud_settings.cloudsettings = item.cloudsettings;
 			cloud_settings.x = item.x;
 			cloud_settings.y = item.y;
 			cloud_settings.z = item.z;
 			cloud_settings.wires = item.wires[0];
 			obj.inputs.cloudsettings.push(cloud_settings);
 		});
-
 		console.log(JSON.stringify(obj));
 		return obj;
 	}
