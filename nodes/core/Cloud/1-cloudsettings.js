@@ -18,7 +18,6 @@
  * This is modified by Megam Systems.
  */
 
-module.exports = function(VARAI) {
+module.exports = function(VARAI) { 
  
-  
 }

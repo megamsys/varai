@@ -35,6 +35,8 @@ var node_types = {};
 var node_configs = [];
 var node_scripts = [];
 var assemblyID = "";
+var email = "";
+var apikey = "";
 
 function loadTemplate(templateFilename) {
     return when.promise(function(resolve,reject) {
@@ -296,7 +298,7 @@ var typeRegistry = module.exports = {
     },
     getID: function() {
         return assemblyID;
-    },
+    },   
     getNodeConfigs: function() {
         var result = "";
         for (var i=0;i<node_configs.length;i++) {
