@@ -608,7 +608,7 @@ VARAI.nodes = function() {
 			}
 			assembly.inputs = "";
 			assembly.operations = "";
-
+            assembly.status = "Launching";
 			assemblies_array.push(assembly);
 		}
 		obj.name = data[0].label || "";

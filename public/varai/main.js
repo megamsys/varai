@@ -271,7 +271,7 @@ var VARAI = function() {
         $("#btn-deploy").addClass("disabled");
         setWorkSpace();
         loadFlows(); 
-        loadSettings();
+        loadSettings();     
         console.log("-----------------------------------entry");       
     }); 
 

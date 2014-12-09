@@ -494,7 +494,7 @@ VARAI.editor = function() {
     function showEditConfigNodeDialog(name,type,id) {
         var adding = (id == "_ADD_");
         var node_def = VARAI.nodes.getType(type);
- 
+          
         var configNode = VARAI.nodes.node(id);
         if (configNode == null) {
             configNode = {

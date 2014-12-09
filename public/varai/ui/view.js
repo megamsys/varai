@@ -1382,8 +1382,7 @@ VARAI.view = function() {
 
     // TODO: 'dirty' should be a property of VARAI.nodes - with an event callback for ui hooks
     function setDirty(d) {
-        dirty = d;
-        console.log("---------------------------------------------------");
+        dirty = d;      
         console.log(dirty);
         if (dirty) {
             $("#btn-deploy").removeClass("disabled").addClass("btn-danger");

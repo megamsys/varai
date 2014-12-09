@@ -25,8 +25,8 @@ module.exports = {
     // By default, the varai UI accepts connections on all IPv4 interfaces.
     // The following property can be used to listen on a specific interface. For
     // example, the following would only allow connections from the local machine.
-    uiHost: "127.0.0.1",
-
+   // uiHost: "127.0.0.1",
+     uiHost: process.env.VARAI_HOST,
     // Retry time in milliseconds for MQTT connections
     mqttReconnectTime: 15000,
 
