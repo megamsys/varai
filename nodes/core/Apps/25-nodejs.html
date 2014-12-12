@@ -53,13 +53,14 @@
 <script type="text/javascript">
     VARAI.nodes.registerType('nodejs',{
         category: 'Apps',
-        color:"#FF9999",
+        color:"#FFFFCC",
         defaults: {
         	 name: {value:"", required:true},
              app: {value:"", required:true},
              domain: {value:"",required:true},
              source: {value:"",required:true},
-             ha: {value:false,required:true}, 
+             ha: {value:false,required:true},
+              ttype: {value:"tosca.app."},   
         },
         label: function() {
             return this.name||"nodejs";

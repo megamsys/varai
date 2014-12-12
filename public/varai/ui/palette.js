@@ -35,15 +35,8 @@ VARAI.palette = function() {
               <div id="palette-'+category+'-output"></div>\
               <div id="palette-'+category+'-function"></div>\
             </div>\
-            </div>');
+            </div>');   	
     	
-   /* 	 $("#palette-container").append('\
-    	            <div class="palette-category">\
-    	            <div id="header-'+category+'" class="palette-header"><i class="expanded icon-chevron-down"></i><span>'+category+'</span></div>\
-    	            <div class="palette-content" id="palette-base-category-'+category+'">\
-    	              <div id="palette-'+category+'"></div>\    	             
-    	            </div>\
-    	            </div>');*/
           
     }
     

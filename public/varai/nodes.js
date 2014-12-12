@@ -444,14 +444,16 @@ VARAI.nodes = function() {
 		var assemblies_array = [];
 		var ha_policy_flag = false;
 		var css = [];
-        console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        console.log(data);
-		//group(assembly) array
+       //group(assembly) array
 		for ( i = 0; i < data.length; i++) {
 			if (data[i].type != "cloudsettings") {
-				groups.push(data[i].app);
-			} else {
-				css.push(data[i]);
+			    if (data[i].type != "docker" ) {
+				    groups.push(data[i].app);
+			    } else {
+				    css.push(data[i]);
+			    }
+			} else {				
+			    css.push(data[i]);
 			}
 		}
 
@@ -509,7 +511,7 @@ VARAI.nodes = function() {
 				if (groups[j] == data[k].app) {
 					var component = JSON.parse("{}");
 					component.name = data[k].name;
-					component.tosca_type = "tosca.web." + data[k].type;
+					component.tosca_type = data[k].ttype + data[k].type;
 					component.requirements = JSON.parse("{}");
 					component.requirements.host = "";
 
@@ -517,7 +519,7 @@ VARAI.nodes = function() {
 					$.each(css, function(csi, csitem) {
 						$.each(csitem.wires[0], function(csj, nodeid) {
 							if (nodeid == data[k].id) {
-								component.requirements.host = csitem.cloudsettings;
+								component.requirements.host = csitem.cloudsettings || csitem.docker;
 							}
 						});
 					});
@@ -529,7 +531,7 @@ VARAI.nodes = function() {
 					component.inputs.username = data[k].username || "";
 					component.inputs.password = data[k].password || "";
 					component.inputs.version = data[k].version || "";
-					component.inputs.source = data[k].source || "";
+					component.inputs.source = data[k].source || data[k].image || "";
 					component.inputs.design_inputs = JSON.parse("{}");
 					component.inputs.design_inputs.id = data[k].id;
 					component.inputs.design_inputs.x = data[k].x;
@@ -622,7 +624,7 @@ VARAI.nodes = function() {
 			var cloud_settings = JSON.parse("{}");
 			cloud_settings.id = item.id;
 			cloud_settings.cstype = item.type;
-			cloud_settings.cloudsettings = item.cloudsettings;
+			cloud_settings.cloudsettings = item.cloudsettings || item.docker;
 			cloud_settings.x = item.x;
 			cloud_settings.y = item.y;
 			cloud_settings.z = item.z;

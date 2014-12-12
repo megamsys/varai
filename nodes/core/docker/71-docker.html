@@ -21,39 +21,38 @@
 -->
 
 <!--  The Input Node  -->
-<script type="text/x-red" data-template-name="cloudsettings">
+<script type="text/x-red" data-template-name="docker">
 	<div class="form-row">
-	<label for="node-input-cloudsettingslabel"><i class="icon-list"></i> Pick a Cloud</label>
-	<select id="node-input-cloudsettings" style="width: 70%;">
+	<label for="node-input-dockerlabel"><i class="icon-list"></i> Docker</label>
+	<select id="node-input-docker" style="width: 70%;">
 
 	</select>
 	</div>
 
 </script>
 
-<script type="text/x-red" data-help-name="cloudsettings">
+<script type="text/x-red" data-help-name="docker">
 
 </script>
 
 <script type="text/javascript">
-	VARAI.nodes.registerType('cloudsettings', {
-		category : 'Cloud',
-		//color : "#0099CC",
-		color : "#FF9999",
+	VARAI.nodes.registerType('docker', {
+		category : 'Docker',
+		color : "#FF6699",
 		defaults : {
-			cloudsettings : {
+			docker : {
 				value : "",
 				required : true
 			}
 		},
 		label : function() {
-			return this.name || "cloudsettings";
+			return this.name || "docker";
 		},
 		inputs : 0,
 		outputs : 1,
 		//  top:0,
 		//  bottom:1,
-		icon : "cloud.png",
+		icon : "docker.png",
 	});	
 
 </script>

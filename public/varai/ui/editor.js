@@ -477,17 +477,30 @@ VARAI.editor = function() {
         if (node.type == "cloudsettings") {
         	var css = parseCloudSettings(cloudsettings);
         	$.each(css, function (i, item) {
-        		//var cs = JSON.parse(item);
+        	  if (item.spec["type_name"] != "docker") {
         	    $('#node-input-cloudsettings').append($('<option>', { 
         	        value: item.name,
         	        text : item.name 
-        	    }));
+        	      }));
+        	    }
         	});
         } else {
+           if (node.type == "docker") {
+              var css = parseCloudSettings(cloudsettings);
+        	  $.each(css, function (i, item) {
+        	   if (item.spec["type_name"] == "docker") {
+        	       $('#node-input-docker').append($('<option>', { 
+        	          value: item.name,
+        	          text : item.name 
+        	       }));
+        	    }
+        	});
+           } else {
            $("#node-input-name").val(chance.first()+chance.last());
            $("#node-input-app").val(chance.first()+chance.last()); 
            var dd = parseDomains(domains);
            $("#node-input-domain").val(dd[0].name);
+         }
         }
     }
 
@@ -501,7 +514,7 @@ VARAI.editor = function() {
                 id: (1+Math.random()*4294967295).toString(16),
                 _def: node_def,
                 type: type
-            }
+            };
             for (var d in node_def.defaults) {
                 if (node_def.defaults[d].value) {
                     configNode[d] = node_def.defaults[d].value;
