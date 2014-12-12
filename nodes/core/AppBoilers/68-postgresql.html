@@ -49,7 +49,13 @@
       <div class="form-row">
         <label for="node-input-dbpassword"><i class="icon-tag"></i>DBPassword</label>
         <input type="text" id="node-input-dbpassword" placeholder="Database Password">
-    </div>        
+    </div>     
+    <input type="radio" name="node-input-choosesource" value="docker"><label for="radio1"><span><span></span></span>Create docker container</label>
+    <input type="radio" name="node-input-choosesource" value="cloud"><label for="radio2"><span><span></span></span>Cloud</label>
+    <div class="form-row">
+        <label for="node-input-image"><i class="icon-tag"></i> Image</label>
+        <input type="text" id="node-input-image" placeholder="Docker hub image" disabled>
+    </div>   
 </script>
 
 <script type="text/x-red" data-help-name="postgresql">
@@ -59,7 +65,7 @@
 <script type="text/javascript">
     VARAI.nodes.registerType('postgresql',{
         category: 'AppBoilers',
-        color:"#999966",
+        color:"#669999",
         defaults: {
             name: {value:"",required:true},
             app: {value:"",required:true},
@@ -67,7 +73,10 @@
             username: {value:"",required:true},
             password: {value:"",required:true},
             dbname: {value:"",required:true},
-            dbpassword: {value:"",required:true}
+            dbpassword: {value:"",required:true},
+            image: { value: "",required:true},
+            ttype: {value:"tosca.service."},
+            
         },
         label: function() {
             return this.name||"postgres";
@@ -77,6 +86,22 @@
       //  top:1,
      //  bottom:0,
         icon: "postgresql.png",
-        align: "right"    
+        align: "right",
+        oneditprepare: function() {
+        
+          $('input[type=radio][name=node-input-choosesource]').on('change', function(){
+             switch($(this).val()){
+             case 'docker' :
+                  $("#node-input-image").removeAttr("disabled"); 
+                 break;
+            case 'cloud' :
+                $("#node-input-image").val('');
+                $("#node-input-image").attr("disabled", "disabled"); 
+                break;
+              }            
+          });       
+           
+          
+        },    
     });
 </script> 

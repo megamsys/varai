@@ -39,6 +39,12 @@
         <label for="node-input-version"><i class="icon-tag"></i> Version</label>
         <input type="text" id="node-input-port" placeholder="2.0.0" value="2.0.0" disabled>
     </div>       
+    <input type="radio" name="node-input-choosesource" value="docker"><label for="radio1"><span><span></span></span>Create docker container</label>
+    <input type="radio" name="node-input-choosesource" value="cloud"><label for="radio2"><span><span></span></span>Cloud</label>
+    <div class="form-row">
+        <label for="node-input-image"><i class="icon-tag"></i> Image</label>
+        <input type="text" id="node-input-image" placeholder="Docker hub image" disabled>
+    </div>
     <!--<div class="form-tips">Tip: leave address and port blank if you want to set using <b>msg.ip</b> and <b>msg.port</b>.</div>-->
     
 </script>
@@ -50,12 +56,15 @@
 <script type="text/javascript">
     VARAI.nodes.registerType('riak',{
         category: 'AppBoilers',
-        color:"#999966",
+        color:"#669999",
         defaults: {
         	name: { value:"",required:true},
             app:  { value:"",required:true},
             domain: { value: "",required:true},
             version: { value: "2.0.0",required:true},
+            image: { value: "",required:true},
+            ttype: {value:"tosca.service."},
+            
         },
         label: function() {
             return this.name||"riak";
@@ -66,6 +75,22 @@
       //  bottom:0,
         icon: "riak.png",
         align: "right",
+        oneditprepare: function() {
+        
+          $('input[type=radio][name=node-input-choosesource]').on('change', function(){
+             switch($(this).val()){
+             case 'docker' :
+                  $("#node-input-image").removeAttr("disabled"); 
+                 break;
+            case 'cloud' :
+                $("#node-input-image").val('');
+                $("#node-input-image").attr("disabled", "disabled"); 
+                break;
+              }            
+          });       
+           
+          
+        },
       //  label: function() {
       //      return this.name||"riak "+(this.addr+":"+this.port);
       //  },

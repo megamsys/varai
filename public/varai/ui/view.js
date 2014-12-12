@@ -1098,7 +1098,7 @@ VARAI.view = function() {
                             //    icon_shade.attr("x",function(d){return d.w-30});
                             //    icon_shade_border.attr("d",function(d){return "M "+(d.w-30)+" 1 l 0 "+(d.h-2);});
                             //}
-                        }
+                        };
                         
                         //icon.style("pointer-events","none");
                         icon_group.style("pointer-events","none");
@@ -1320,17 +1320,23 @@ VARAI.view = function() {
                     d3.event.stopPropagation();
                 });           
             l.append("svg:path").attr("class","link_outline link_path");
+            
+            //change line colors
             if (d.source.type == "cloudsettings") {
                l.append("svg:path").attr("class","link_line link_path");
             } else {
-            	l.append("svg:path").attr("class","link_line_bind link_path");
+                if (d.source.type == "docker") {
+                    l.append("svg:path").attr("class","link_line link_path");
+                } else {
+            	   l.append("svg:path").attr("class","link_line_bind link_path");
+              }
             }
          } 
         }); 
 
         link.exit().remove();
 
-        var links = vis.selectAll(".link_path")
+        var links = vis.selectAll(".link_path");
         links.attr("d",function(d){
                 var numOutputs = d.source.outputs || 1;
                 var sourcePort = d.sourcePort || 0;
@@ -1361,10 +1367,10 @@ VARAI.view = function() {
                     " C "+(d.source.x+d.source.w/2+scale*node_width)+" "+(d.source.y+y+scaleY*node_height)+" "+
                     (d.target.x-d.target.w/2-scale*node_width)+" "+(d.target.y-scaleY*node_height)+" "+
                     (d.target.x-d.target.w/2)+" "+d.target.y;
-        })
+        });
 
         link.classed("link_selected", function(d) { return d === selected_link || d.selected; });
-        link.classed("link_unknown",function(d) { return d.target.type == "unknown" || d.source.type == "unknown"});
+        link.classed("link_unknown",function(d) { return d.target.type == "unknown" || d.source.type == "unknown"; });
 
         if (d3.event) {
             d3.event.preventDefault();

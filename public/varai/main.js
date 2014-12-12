@@ -86,7 +86,7 @@ var VARAI = function() {
             var totalCSLength = 0;
             
             for(i=0;i<dataLength; i++) {
-            	if(nns[i].type == "cloudsettings") {            	
+            	if(nns[i].type == "cloudsettings" || nns[i].type == "docker") {            	
             		totalCS = totalCS + 1;
             		totalCSLength = totalCSLength + nns[i].wires[0].length;
             	  } 
